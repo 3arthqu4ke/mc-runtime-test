@@ -3,17 +3,8 @@
   "minVersion": "0.8",
   "package": "me.earth.mc_runtime_test.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "MixinCommandContextImpl"
-  ],
   "client": [
-    "MixinGameRenderer",
-    "MixinMinecraft",
-    "MixinRenderTarget",
-    "MixinSoundBufferLibrary",
-    "MixinSoundEngine",
-    "MixinSoundManager",
-    "MixinWindow"
+    "MixinMinecraft"
   ],
   "injectors": {
     "defaultRequire": 1
