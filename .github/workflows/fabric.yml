@@ -33,7 +33,7 @@ jobs:
             -   name: List versions
                 run: java -jar headlessmc-launcher-1.9.1.jar --command versions
             -   name: Make mods dir
-                run: mkdir run/mods
+                run: mkdir -p run/mods
             -   name: Build
                 run: ./gradlew build
             -   name: Copy mod
