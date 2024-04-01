@@ -22,8 +22,10 @@ jobs:
                 run: echo hmc.gamedir=$PWD/run >> HeadlessMC/config.properties
             -   name: Configure offline mode
                 run: echo hmc.offline=true >> HeadlessMC/config.properties
-            -   name: Setup game args
+            -   name: Configure game args
                 run: echo hmc.gameargs=--quickPlaySingleplayer Test >> HeadlessMC/config.properties
+            -   name: Configure Exceptions
+                run: echo hmc.rethrow.launch.exceptions=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
                 run: wget -O headlessmc-launcher-1.9.1.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.1/headlessmc-launcher-1.9.1.jar
             -   name: Download 1.20.4
