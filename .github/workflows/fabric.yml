@@ -15,6 +15,6 @@ jobs:
             -   name: Grant execute permission for gradlew
                 run: chmod +x gradlew
             -   name: Echo jdk
-                run: echo ${{ steps.setup-java-17.outputs.jdk-path }}
+                run: echo "${{ steps.setup-java-17.outputs.jdk-path }}"
             -   name: Ls jdk
-                run: ls ${{ steps.setup-java-17.outputs.jdk-path }}
+                run: ls "${{ steps.setup-java-17.outputs.jdk-path }}"
