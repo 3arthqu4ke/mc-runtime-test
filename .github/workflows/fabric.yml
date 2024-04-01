@@ -25,7 +25,7 @@ jobs:
             -   name: Setup game args
                 run: echo hmc.gameargs=--quickPlaySingleplayer Test >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
-                run: wget headlessmc-launcher-1.9.1.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.1/headlessmc-launcher-1.9.1.jar
+                run: wget -O headlessmc-launcher-1.9.1.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.1/headlessmc-launcher-1.9.1.jar
             -   name: Download 1.20.4
                 run: java -jar headlessmc-launcher-1.9.1.jar --command download 1.20.4
             -   name: Download Fabric 1.20.4
