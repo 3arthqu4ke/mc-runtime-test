@@ -1,4 +1,4 @@
-name: Build
+name: Run Fabric Client
 on: 
     workflow_dispatch:
 
