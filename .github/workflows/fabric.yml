@@ -41,6 +41,6 @@ jobs:
             -   name: Build
                 run: ./gradlew build
             -   name: Copy mod
-                run: cp build/libs/mc-runtime-test-0.1.0-fabric-release.jar run/mods
+                run: cp build/libs/mc-runtime-test-*-fabric-release.jar run/mods
             -   name: Run game
                 run: java -jar headlessmc-launcher-1.9.3.jar --command launch fabric.*1.20.4 -regex -lwjgl
