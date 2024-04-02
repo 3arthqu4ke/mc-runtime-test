@@ -48,7 +48,7 @@ public abstract class MixinMinecraft {
 
         if (player != null && level != null) {
             if (screen == null) {
-                if (level.getChunk((int) player.getX(), (int) player.getZ()).isEmpty()) {
+                if (!level.getChunk((int) player.getX(), (int) player.getZ()).isEmpty()) {
                     if (player.tickCount < 100) {
                         LOGGER.info("Waiting " + (100 - player.tickCount) + " ticks before testing...");
                     } else {
