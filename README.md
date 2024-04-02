@@ -16,6 +16,7 @@ We can do this too, by using [HeadlessMC](https://github.com/3arthqu4ke/headless
 This project contains a simple 1.20.4 mod, which, after the game has launched, creates a new SinglePlayer world and waits for a short amount of time after the players chunk has loaded, then quits the game.
 The [fabric.yml](.github/workflows/fabric.yml) Github Action then builds the mod, and runs it on the fabric 1.20.4 client with headlessmc.
 Right away, it caught a bug that I was not warned about at compile time: my mixin config still contained old deleted mixins, causing my game to crash.
+A successful run can be found [here](https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8521206581/job/23338896409).
 
 ## TODOs and thoughts
 - Fix status http 429, too many requests, when downloading assets (3arthqu4ke/headlessmc#136).
