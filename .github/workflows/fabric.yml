@@ -22,8 +22,6 @@ jobs:
                 run: echo hmc.gamedir=$PWD/run >> HeadlessMC/config.properties
             -   name: Configure offline mode
                 run: echo hmc.offline=true >> HeadlessMC/config.properties
-            -   name: Configure game args
-                run: echo hmc.gameargs=--quickPlaySingleplayer Test >> HeadlessMC/config.properties
             -   name: Configure Exceptions
                 run: echo hmc.rethrow.launch.exceptions=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
