@@ -18,6 +18,10 @@ on:
           description: 'The modloader to install with HeadlessMc (forge, neoforge or fabric)'
           required: true
           default: 'forge'
+        regex:
+          description: 'Regex to match the Minecraft version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
+          required: true
+          default: 'fabric.*1.20.4'
         java:
           description: 'The Java version to use'
           required: true
@@ -65,4 +69,4 @@ jobs:
             -   name: LS mods dir
                 run: ls run/mods
             -   name: Run game
-                run: java -jar headlessmc-launcher-1.9.3.jar --command launch ^(?=.*${{ github.event.inputs.modloader }})(?=.*${{ github.event.inputs.mc }}).*$ -regex -lwjgl
+                run: java -jar headlessmc-launcher-1.9.3.jar --command launch ${{ github.event.inputs.regex }} -regex -lwjgl
