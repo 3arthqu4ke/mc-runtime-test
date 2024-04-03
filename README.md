@@ -19,6 +19,7 @@ Right away, it caught a bug that I was not warned about at compile time: my mixi
 A successful run can be found [here](https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8521206581/job/23338896409).
 
 ## TODOs and thoughts
+- Make Fabric/Forge not show a screen when an exception occurs, but crash properly. (https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8543522919)
 - Fix status http 429, too many requests, when downloading assets (3arthqu4ke/headlessmc#136).
 - Expand this. Currently this is just a 1.20.4 example. To test headlessmc's lwjgl patching capabilities I would like to launch as many different minecraft versions as possible.  
         - Can we do this while being mostly mc and mod launcher version agnostic?  
