@@ -65,4 +65,4 @@ jobs:
             -   name: LS mods dir
                 run: ls run/mods
             -   name: Run game
-                run: java -jar headlessmc-launcher-1.9.3.jar --command launch ${{ github.event.inputs.dir }}.*${{ github.event.inputs.mc }} -regex -lwjgl
+                run: java -jar headlessmc-launcher-1.9.3.jar --command launch ${{ github.event.inputs.modloader }}.*${{ github.event.inputs.mc }} -regex -lwjgl
