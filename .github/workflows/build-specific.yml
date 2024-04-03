@@ -2,6 +2,10 @@ name: Build specific version
 on: 
     workflow_dispatch:
       inputs:
+        dir:
+          description: 'The directory to build in'
+          required: true
+          default: '1_20'
         mc:
           description: 'The Minecraft version to build'
           required: true
@@ -25,6 +29,6 @@ jobs:
                 java-version: 17
                 distribution: adopt
         -   name: Grant execute permission for gradlew
-            run: chmod +x gradlew
+            run: chmod +x ${{ github.event.inputs.dir }}/gradlew
         -   name: Build
-            run: ./gradlew build -Pminecraft_version=${{ github.event.inputs.mc }} -Plexforge_version=${{ github.event.inputs.lex }} -Pneoforge_version=${{ github.event.inputs.neo }}
+            run: ./${{ github.event.inputs.dir }}/gradlew build -Pminecraft_version=${{ github.event.inputs.mc }} -Plexforge_version=${{ github.event.inputs.lex }} -Pneoforge_version=${{ github.event.inputs.neo }}
