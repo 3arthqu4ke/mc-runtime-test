@@ -12,11 +12,11 @@ jobs:
         -   uses: actions/checkout@v2
         -   uses: actions/setup-java@v2
             with:
-                java-version: 17
+                java-version: 16
                 distribution: adopt
         -   name: Grant execute permission for gradlew
-            working-directory: ./1_18
+            working-directory: ./1_17
             run: chmod +x gradlew
         -   name: Build
-            working-directory: ./1_18
+            working-directory: ./1_17
             run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }}
