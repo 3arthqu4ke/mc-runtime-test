@@ -7,9 +7,11 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          version: [ [1.20.4, 1-beta], [1.20.3, 1-beta] ]
+          version: [ {mc: 1.20.4, lex: 49.0.38, neo: 219}, {mc: 1.20.3, lex: 49.0.2, neo: 8-beta} ]
       steps:
         -   name: Test
-            run: echo ${{ matrix.version[0] }}
+            run: echo ${{ matrix.version.mc }}
         -   name: Test2
-            run: echo ${{ matrix.version[1] }}
+            run: echo ${{ matrix.version.lex }}
+        -   name: Test3
+            run: echo ${{ matrix.version.neo }}
