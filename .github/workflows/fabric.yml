@@ -43,4 +43,4 @@ jobs:
             -   name: LS mods dir
                 run: ls run/mods
             -   name: Run game
-                run: java -jar headlessmc-launcher-1.9.3.jar --command launch fabric.*1.20.4 -regex -lwjgl
+                run: java -jar headlessmc-launcher-1.9.3.jar --command launch fabric.*1.20.4 -regex -lwjgl --jvm -Djava.awt.headless=true
