@@ -1,4 +1,4 @@
-name: Run Fabric Client
+name: Run Minecraft
 on: 
     workflow_dispatch:
       inputs:
