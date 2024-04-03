@@ -1,0 +1,136 @@
+buildscript {
+    repositories {
+        //noinspection JCenterRepository
+        mavenCentral()
+        maven {
+            name = 'forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+        maven {
+            name = 'SpongePowered'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+        maven {
+            name = "jitpack.io"
+            url = "https://jitpack.io"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.tweaker-client'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group 'me.earth'
+version '1.12.2'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+minecraft {
+    version = '1.12.2'
+    runDir = 'run'
+    mappings = 'stable_39'
+    makeObfSourceJar = false
+    tweakClass = 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker'
+}
+
+repositories {
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+
+    maven {
+        name = "jitpack.io"
+        url  = "https://jitpack.io"
+    }
+
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    compile('com.github.ImpactDevelopment:SimpleTweaker:1.2') {
+        exclude module: 'launchwrapper'
+    }
+
+    compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+    }
+}
+
+task getDeps(type: Copy) {
+    from sourceSets.main.runtimeClasspath
+    into 'runtime/'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+shadowJar {
+    configurations = [project.configurations.compile]
+    dependencies {
+        //noinspection GroovyAssignabilityCheck
+        include(dependency('org.spongepowered:mixin'))
+        //noinspection GroovyAssignabilityCheck
+        include(dependency('com.github.ImpactDevelopment:SimpleTweaker'))
+    }
+
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
+    classifier = 'full'
+}
+
+mixin {
+    defaultObfuscationEnv notch
+    add sourceSets.main, 'mc_runtime_test.mixins.refmap.json'
+}
+
+reobf {
+    shadowJar {
+        mappingType = 'NOTCH'
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Manifest-Version': 1.0,
+            'TweakClass': 'me.earth.headlessmc.mc.tweaker.McRuntimeTestTweaker',
+            'TweakOrder': -999
+        )
+    }
+}
+
+build.dependsOn(shadowJar)
