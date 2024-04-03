@@ -1,4 +1,4 @@
-name: Build Matrix
+name: Build Matrix 1.20+
 on: 
     workflow_dispatch:
 
@@ -7,7 +7,7 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          version: [ {mc: 1.20.4, lex: 49.0.38, neo: 219}, {mc: 1.20.3, lex: 49.0.2, neo: 8-beta} ]
+          version: [ {mc: 1.20.4, lex: 49.0.38, neo: 219}, {mc: 1.20.3, lex: 49.0.2, neo: 8-beta}, {mc: 1.20.2, lex: 48.1.0, neo: 88} ]
       steps:
         -   uses: actions/checkout@v2
         -   uses: actions/setup-java@v2
