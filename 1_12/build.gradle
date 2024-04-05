@@ -69,7 +69,7 @@ unimined.minecraft(sourceSets.lexforge) {
     combineWith(sourceSets.main)
 
     minecraftForge {
-        loader project.forge_version
+        loader project.lexforge_version
         mixinConfig "mc_runtime_test.mixins.json"
     }
 
