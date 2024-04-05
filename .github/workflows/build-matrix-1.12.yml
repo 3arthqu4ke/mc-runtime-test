@@ -1,4 +1,4 @@
-name: Build Matrix 1.16+
+name: Build Matrix 1.12+
 on: 
     workflow_dispatch:
 
