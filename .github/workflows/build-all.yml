@@ -4,10 +4,9 @@ on:
 
 jobs:
     runs-on: ubuntu-latest
-      strategy:
+    strategy:
         matrix:
-          workflow: [ 1.7, 1.8, 1.12, 1.16, 1.17, 1.18, 1.19, 1.20 ]
-      steps:
+            workflow: [ 1.7, 1.8, 1.12, 1.16, 1.17, 1.18, 1.19, 1.20 ]
+    steps:
         -   name: Build ${{ matrix.workflow }}
-            uses: uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-${{ matrix.workflow }}.yml@main
-      
+            uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-${{ matrix.workflow }}.yml@main
