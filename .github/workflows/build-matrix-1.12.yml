@@ -1,0 +1,22 @@
+name: Build Matrix 1.16+
+on: 
+    workflow_dispatch:
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          version: [ {mc: 1.12.2, lex: 14.23.5.2860} ]
+      steps:
+        -   uses: actions/checkout@v2
+        -   uses: actions/setup-java@v2
+            with:
+                java-version: 8
+                distribution: adopt
+        -   name: Grant execute permission for gradlew
+            working-directory: ./1_16
+            run: chmod +x gradlew
+        -   name: Build
+            working-directory: ./1_16
+            run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }}
