@@ -1,6 +1,7 @@
 package me.earth.mc_runtime_test.mixin;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ErrorScreen;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -40,6 +41,14 @@ public abstract class MixinMinecraft {
     public abstract @Nullable Overlay getOverlay();
 
     @Shadow public abstract void setScreen(@Nullable Screen screen);
+
+    @Inject(method = "setScreen", at = @At("HEAD"))
+    private void setScreenHook(Screen screen, CallbackInfo ci) {
+        if (screen instanceof ErrorScreen) {
+            running = false;
+            throw new RuntimeException("Error Screen " + screen);
+        }
+    }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickHook(CallbackInfo ci) {

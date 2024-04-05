@@ -2,6 +2,7 @@ package me.earth.mc_runtime_test.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -36,6 +37,14 @@ public abstract class MixinMinecraft {
     @Shadow public abstract void launchIntegratedServer(String par1, String par2, WorldSettings par3);
 
     @Shadow public abstract void displayGuiScreen(GuiScreen par1);
+
+    @Inject(method = "displayGuiScreen", at = @At("HEAD"))
+    private void displayGuiScreenHook(GuiScreen guiScreenIn, CallbackInfo ci) {
+        if (guiScreenIn instanceof GuiErrorScreen) {
+            running = false;
+            throw new RuntimeException("Error Screen " + guiScreenIn);
+        }
+    }
 
     @Inject(method = "runTick", at = @At("HEAD"))
     private void tickHook(CallbackInfo ci) {

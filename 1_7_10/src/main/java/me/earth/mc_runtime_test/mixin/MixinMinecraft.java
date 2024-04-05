@@ -4,6 +4,7 @@ import me.earth.mc_runtime_test.WorldCreator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -30,6 +31,14 @@ public abstract class MixinMinecraft {
     volatile boolean running;
     @Unique
     private boolean mcRuntimeTest$startedLoadingSPWorld = false;
+
+    @Inject(method = "displayGuiScreen", at = @At("HEAD"))
+    private void displayGuiScreenHook(GuiScreen guiScreenIn, CallbackInfo ci) {
+        if (guiScreenIn instanceof GuiErrorScreen) {
+            running = false;
+            throw new RuntimeException("Error Screen " + guiScreenIn);
+        }
+    }
 
     @Inject(method = "runTick", at = @At("HEAD"))
     private void tickHook(CallbackInfo ci) {
