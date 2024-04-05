@@ -7,4 +7,6 @@ jobs:
         uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-1.8.yml@main
     build-1_12:
         uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-1.12.yml@main
+    build-1_20:
+        uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-1.20.yml@main
 
