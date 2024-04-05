@@ -1,6 +1,7 @@
 name: Build Matrix 1.16+
 on: 
     workflow_dispatch:
+    workflow_call:
 
 jobs:
     build:

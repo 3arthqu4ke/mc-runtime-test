@@ -1,6 +1,7 @@
 name: Run Fabric Client
 on: 
     workflow_dispatch:
+    workflow_call:
 
 jobs:
     build:

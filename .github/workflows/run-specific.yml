@@ -1,5 +1,6 @@
 name: Run Minecraft
-on: 
+on:
+    workflow_call:
     workflow_dispatch:
       inputs:
         dir:
