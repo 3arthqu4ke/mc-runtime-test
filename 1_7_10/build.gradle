@@ -1,0 +1,162 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.1.2'
+}
+
+group 'me.earth'
+version '0.1.0'
+
+base {
+    archivesName = 'mc-runtime-test'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    fabric {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+    lexforge {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+repositories {
+    maven {
+        name = "wagyourtail releases"
+        url = "https://maven.wagyourtail.xyz/releases"
+    }
+    maven {
+        name = "sponge"
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+    mavenCentral()
+}
+
+unimined.minecraft {
+    version project.minecraft_version
+
+    mappings {
+        searge()
+        mcp("stable", "12-1.7.10")
+    }
+
+    defaultRemapJar = false
+}
+
+unimined.minecraft(sourceSets.fabric) {
+    combineWith(sourceSets.main)
+
+    legacyFabric {
+        loader project.fabric_version
+    }
+
+    defaultRemapJar = true
+}
+
+unimined.minecraft(sourceSets.lexforge) {
+    combineWith(sourceSets.main)
+
+    minecraftForge {
+        loader project.forge_version
+        mixinConfig "mc_runtime_test.mixins.json"
+    }
+
+    defaultRemapJar = true
+}
+
+configurations {
+    mainImplementation
+    implementation {
+        extendsFrom lexforgeImplementation
+        extendsFrom fabricImplementation
+    }
+
+    jarLibs
+    implementation.extendsFrom jarLibs
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.mainImplementation
+        runtimeClasspath += configurations.mainImplementation
+    }
+}
+
+dependencies {
+    jarLibs('com.github.ImpactDevelopment:SimpleTweaker:1.2') {
+        exclude module: 'launchwrapper'
+    }
+
+    jarLibs('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+    }
+}
+
+for (String platform_capitalized : ['Fabric', 'Lexforge']) {
+    def platform = platform_capitalized.toLowerCase()
+    def remapJarTask = tasks.named("remap${platform_capitalized}Jar", AbstractArchiveTask).get()
+    def shadowTask = tasks.register("${platform}ShadowJar", ShadowJar) {
+        dependsOn(remapJarTask)
+        it.group = 'build'
+        it.archiveClassifier = "${platform}-release"
+        from remapJarTask.outputs
+        it.configurations += [ project.configurations.jarLibs ]
+    }
+
+    tasks.named('build') { finalizedBy(shadowTask) }
+}
+
+
+jar {
+    enabled = false
+}
+
+tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
+    from("LICENSE") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        rename { "${it}_${project.archivesBaseName}" }
+    }
+
+    manifest {
+        attributes(
+                'Implementation-Title': 'MC-Runtime-Test',
+                'TweakClass': 'me.earth.headlessmc.mc.tweaker.McRuntimeTestTweaker',
+                'MixinConfigs': "mc_runtime_test.mixins.json",
+                'Implementation-Version': project.version,
+        )
+    }
+}
+
+processFabricResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+processLexforgeResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+
+    filesMatching("mcmod.info") {
+        expand "version": project.version
+    }
+}
