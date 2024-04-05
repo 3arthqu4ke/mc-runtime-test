@@ -15,8 +15,8 @@ jobs:
                 java-version: 8
                 distribution: adopt
         -   name: Grant execute permission for gradlew
-            working-directory: ./1_16
+            working-directory: ./1_12
             run: chmod +x gradlew
         -   name: Build
-            working-directory: ./1_16
+            working-directory: ./1_12
             run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }}
