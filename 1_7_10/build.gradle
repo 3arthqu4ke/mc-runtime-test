@@ -94,10 +94,8 @@ sourceSets {
 }
 
 dependencies {
-    jarLibs('com.github.ImpactDevelopment:SimpleTweaker:1.2') {
-        exclude module: 'launchwrapper'
-    }
-
+    implementation 'net.minecraft:launchwrapper:1.12'
+    jarLibs 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
     jarLibs('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'

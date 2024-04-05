@@ -22,12 +22,12 @@ import java.util.Random;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow @Final private static Logger logger;
 
-    @Shadow private IntegratedServer integratedServer;
+    @Shadow private IntegratedServer theIntegratedServer;
     @Shadow public GuiScreen currentScreen;
-    @Shadow public EntityPlayerSP player;
-    @Shadow public WorldClient world;
+    @Shadow public EntityPlayerSP thePlayer;
+    @Shadow public WorldClient theWorld;
 
     @Shadow
     volatile boolean running;
@@ -46,27 +46,27 @@ public abstract class MixinMinecraft {
                 mcRuntimeTest$startedLoadingSPWorld = true;
             }
         } else {
-            LOGGER.info("Waiting for overlay to disappear...");
+            logger.info("Waiting for overlay to disappear...");
         }
 
-        if (player != null && world != null) {
+        if (thePlayer != null && theWorld != null) {
             if (currentScreen == null) {
-                if (!world.getChunk(player.getPosition()).isEmpty()) {
-                    if (player.ticksExisted < 100) {
-                        LOGGER.info("Waiting " + (100 - player.ticksExisted) + " ticks before testing...");
+                if (!theWorld.getChunkFromChunkCoords(((int) thePlayer.posX) >> 4, ((int) thePlayer.posZ) >> 4).isEmpty()) {
+                    if (thePlayer.ticksExisted < 100) {
+                        logger.info("Waiting " + (100 - thePlayer.ticksExisted) + " ticks before testing...");
                     } else {
-                        LOGGER.info("Test successful!");
+                        logger.info("Test successful!");
                         running = false;
                     }
                 } else {
-                    LOGGER.info("Players chunk not yet loaded, " + player + ": cores: " + Runtime.getRuntime().availableProcessors()
-                            + ", server running: " + (integratedServer == null ? "null" : integratedServer.isServerRunning()));
+                    logger.info("Players chunk not yet loaded, " + thePlayer + ": cores: " + Runtime.getRuntime().availableProcessors()
+                            + ", server running: " + (theIntegratedServer == null ? "null" : theIntegratedServer.isServerRunning()));
                 }
             } else {
-                LOGGER.info("Screen not yet null: " + currentScreen);
+                logger.info("Screen not yet null: " + currentScreen);
             }
         } else {
-            LOGGER.info("Waiting for player to load...");
+            logger.info("Waiting for player to load...");
         }
     }
 
@@ -75,7 +75,6 @@ public abstract class MixinMinecraft {
         displayGuiScreen(null);
         long seed = (new Random()).nextLong();
         WorldSettings worldsettings = new WorldSettings(seed, GameType.SURVIVAL, true, false, WorldType.DEFAULT);
-        worldsettings.setGeneratorOptions("");
         launchIntegratedServer("new_world", "New World", worldsettings);
     }
 
