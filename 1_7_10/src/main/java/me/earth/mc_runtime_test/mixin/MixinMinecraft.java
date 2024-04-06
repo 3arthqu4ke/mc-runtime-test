@@ -29,6 +29,9 @@ public abstract class MixinMinecraft {
 
     @Shadow
     volatile boolean running;
+
+    @Shadow public abstract void displayGuiScreen(GuiScreen par1);
+
     @Unique
     private boolean mcRuntimeTest$startedLoadingSPWorld = false;
 
@@ -75,7 +78,7 @@ public abstract class MixinMinecraft {
     @Unique
     private void mc_runtime_test$loadSinglePlayerWorld() {
         WorldCreator creator = new WorldCreator(new GuiMainMenu());
-        creator.initGui();
+        displayGuiScreen(creator);
         creator.createNewWorld();
     }
 
