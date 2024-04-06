@@ -13,7 +13,6 @@ jobs:
       dir: ${{ matrix.version.dir }}
       mc: ${{ matrix.version.mc }}
       type: ${{ matrix.version.type }}
-      modloader: ${{ matrix.target }}
-      regex: ${{ matrix.target }}
-      java: ${{ matrix.target }}
-      
+      modloader: ${{ matrix.version.modloader }}
+      regex: ${{ matrix.version.regex }}
+      java: ${{ matrix.version.java }}
