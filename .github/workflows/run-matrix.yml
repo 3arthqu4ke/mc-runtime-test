@@ -7,7 +7,10 @@ jobs:
   RunMinecraft:
     strategy:
       matrix:
-        version: [ { dir: 1_20, mc: 1.20.4, type: lexforge, modloader: forge, regex: .*forge.*, java: 17 } ]
+        version:
+          - { dir: 1_20, mc: 1.20.4, type: lexforge, modloader: forge, regex: .*forge.*, java: 17 }
+          - { dir: 1_20, mc: 1.20.4, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 17 }
+          - { dir: 1_20, mc: 1.20.4, type: fabric, modloader: fabric, regex: .*fabric.*, java: 17 }
     uses: 3arthqu4ke/mc-runtime-test/.github/workflows/run-specific-reusable.yml@main
     with:
       dir: ${{ matrix.version.dir }}
