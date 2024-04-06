@@ -64,7 +64,7 @@ jobs:
             -   name: Download ${{ inputs.mc }}
                 run: java -jar headlessmc-launcher-1.9.4.jar --command download ${{ inputs.mc }}
             -   name: Download Fabric ${{ inputs.mc }}
-                run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ inputs.modloader }} ${{ inputs.mc }} --java ${{ github.event.inputs.java }}
+                run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ inputs.modloader }} ${{ inputs.mc }} --java ${{ inputs.java }}
             -   name: List versions
                 run: java -jar headlessmc-launcher-1.9.4.jar --command versions
             -   name: Make mods dir
