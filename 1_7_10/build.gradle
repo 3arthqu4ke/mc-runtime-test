@@ -132,7 +132,7 @@ tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
     manifest {
         attributes(
                 'Implementation-Title': 'MC-Runtime-Test',
-                'TweakClass': 'me.earth.headlessmc.mc.tweaker.McRuntimeTestTweaker',
+                'TweakClass': 'me.earth.mc_runtime_test.tweaker.McRuntimeTestTweaker',
                 'MixinConfigs': "mc_runtime_test.mixins.json",
                 'Implementation-Version': project.version,
         )
