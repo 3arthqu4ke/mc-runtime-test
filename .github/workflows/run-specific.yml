@@ -57,7 +57,7 @@ jobs:
                 run: wget -O headlessmc-launcher-1.9.4.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.4/headlessmc-launcher-1.9.4.jar
             -   name: Download ${{ github.event.inputs.mc }}
                 run: java -jar headlessmc-launcher-1.9.4.jar --command download ${{ github.event.inputs.mc }}
-            -   name: Download Fabric ${{ github.event.inputs.mc }}
+            -   name: Download ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }}
                 run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }} --java ${{ github.event.inputs.java }}
             -   name: List versions
                 run: java -jar headlessmc-launcher-1.9.4.jar --command versions
