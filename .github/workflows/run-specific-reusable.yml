@@ -51,8 +51,6 @@ jobs:
                 run: echo hmc.java.versions=$JAVA_HOME/bin/java > HeadlessMC/config.properties
             -   name: Configure HeadlessMC game directory
                 run: echo hmc.gamedir=$PWD/run >> HeadlessMC/config.properties
-            -   name: Configure HeadlessMC mc directory
-                run: echo hmc.mcdir=$PWD/run >> HeadlessMC/config.properties
             -   name: Configure offline mode
                 run: echo hmc.offline=true >> HeadlessMC/config.properties
             -   name: Configure Exceptions
