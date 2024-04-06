@@ -15,7 +15,6 @@ base {
 
 sourceSets {
     fabric
-    neoforge
     lexforge
 }
 
@@ -68,25 +67,6 @@ unimined.minecraft(sourceSets.fabric) {
     defaultRemapJar = true
 }
 
-unimined.minecraft(sourceSets.neoforge) {
-    combineWith(sourceSets.main)
-
-    neoForged {
-        loader project.neoforge_version
-        mixinConfig 'mc_runtime_test.mixins.json'
-    }
-
-    minecraftRemapper.config {
-        // neoforge adds 1 conflict, where 2 interfaces have a method with the same name on yarn/mojmap,
-        // but the method has different names in the intermediary mappings.
-        // this is a conflict because they have a class that extends both interfaces.
-        // this shouldn't be a problem as long as named mappings don't make the name of those 2 methods different.
-        ignoreConflicts(true)
-    }
-
-    defaultRemapJar = true
-}
-
 unimined.minecraft(sourceSets.lexforge) {
     combineWith(sourceSets.main)
 
@@ -109,7 +89,7 @@ configurations {
     implementation.extendsFrom jarLibs
 }
 
-for (String platform_capitalized : ['Fabric', 'Neoforge', 'Lexforge']) {
+for (String platform_capitalized : ['Fabric', 'Lexforge']) {
     def platform = platform_capitalized.toLowerCase()
     def remapJarTask = tasks.named("remap${platform_capitalized}Jar", AbstractArchiveTask).get()
     def shadowTask = tasks.register("${platform}ShadowJar", ShadowJar) {
@@ -154,14 +134,6 @@ processFabricResources {
     }
 }
 
-processNeoforgeResources {
-    inputs.property "version", project.version
-
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
-}
-
 processLexforgeResources {
     inputs.property "version", project.version
 
@@ -181,16 +153,6 @@ afterEvaluate {
         }
 
         classpath += files("${projectDir}/build/libs/mc-runtime-test-${version}-lexforge-dev.jar".replace('/', File.separator))
-    }
-
-    neoforgeRunClient {
-        dependsOn(neoforgeJar)
-        classpath = classpath.filter {
-            !it.toString().contains('mc-runtime-test/build/classes/java/'.replace('/', File.separator))
-                    && !it.toString().contains('mc-runtime-test/build/resources/'.replace('/', File.separator))
-        }
-
-        classpath += files("${projectDir}/build/libs/mc-runtime-test-${version}-neoforge-dev.jar".replace('/', File.separator))
     }
 }
 
