@@ -1,4 +1,4 @@
-name: Run Fabric Client
+name: Run Fabric 1.20.4
 on: 
     workflow_dispatch:
     workflow_call:
@@ -25,6 +25,8 @@ jobs:
                 run: echo hmc.offline=true >> HeadlessMC/config.properties
             -   name: Configure Exceptions
                 run: echo hmc.rethrow.launch.exceptions=true >> HeadlessMC/config.properties
+            -   name: Configure Failing on wrong command
+                run: echo hmc.exit.on.failed.command=true >> HeadlessMC/config.properties
             -   name: Configure Dummy Assets
                 run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC

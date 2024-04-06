@@ -55,6 +55,8 @@ jobs:
                 run: echo hmc.offline=true >> HeadlessMC/config.properties
             -   name: Configure Exceptions
                 run: echo hmc.rethrow.launch.exceptions=true >> HeadlessMC/config.properties
+            -   name: Configure Failing on wrong command
+                run: echo hmc.exit.on.failed.command=true >> HeadlessMC/config.properties
             -   name: Configure Dummy Assets
                 run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
@@ -62,7 +64,7 @@ jobs:
             -   name: Download ${{ inputs.mc }}
                 run: java -jar headlessmc-launcher-1.9.4.jar --command download ${{ inputs.mc }}
             -   name: Download Fabric ${{ inputs.mc }}
-                run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ inputs.modloader }} ${{ inputs.mc }}
+                run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ inputs.modloader }} ${{ inputs.mc }} --java ${{ github.event.inputs.java }}
             -   name: List versions
                 run: java -jar headlessmc-launcher-1.9.4.jar --command versions
             -   name: Make mods dir
