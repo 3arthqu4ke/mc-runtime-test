@@ -114,6 +114,9 @@ for (String platform_capitalized : ['Fabric', 'Lexforge']) {
         it.archiveClassifier = "${platform}-release"
         from remapJarTask.outputs
         it.configurations += [ project.configurations.jarLibs ]
+        // Mixin is signed
+        exclude 'META-INF/*.RSA'
+        exclude 'META-INF/*.SF'
     }
 
     tasks.named('build') { finalizedBy(shadowTask) }
