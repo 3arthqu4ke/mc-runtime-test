@@ -1,5 +1,7 @@
 name: Build All
 on:
+    push:
+    pull_request:
     workflow_dispatch:
     workflow_call:
 
