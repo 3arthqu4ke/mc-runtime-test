@@ -1,0 +1,29 @@
+name: Build API
+
+on:
+  push:
+  workflow_call: 
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+
+      - name: Grant execute permission for gradlew
+        working-directory: ./api
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        working-directory: ./api
+        run: |
+          ./gradlew build

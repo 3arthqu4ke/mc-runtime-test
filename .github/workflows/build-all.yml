@@ -3,6 +3,8 @@ on:
     workflow_dispatch:
 
 jobs:
+    build-api:
+        uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-api.yml@main
     build-1_7:
         uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-matrix-1.7.yml@main
     build-1_8:
