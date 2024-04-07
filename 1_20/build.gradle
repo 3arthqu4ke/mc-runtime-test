@@ -143,10 +143,6 @@ afterEvaluate {
     }
 }
 
-jar {
-    enabled = false
-}
-
 processFabricResources {
     inputs.property "version", project.version
 
@@ -222,6 +218,7 @@ afterEvaluate {
                     String platform_lower = platform.toLowerCase()
                     artifact tasks.named("${platform_lower}Jar").get()
                     artifact tasks.named("remap${platform}Jar").get()
+                    artifact tasks.named("${platform_lower}ShadowJar").get()
                 }
             }
         }
@@ -230,9 +227,7 @@ afterEvaluate {
             if (System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL') == null) {
                 maven {
                     name = 'BuildDirMaven'
-                    File f = rootProject.projectDir
-                    File f2 = f.toPath().parent.resolve('build').resolve('maven')
-                    url = rootProject.projectDir.getParentFile().toPath().relative('maven')
+                    url = rootProject.projectDir.toPath().parent.resolve('build').resolve('maven')
                 }
             } else {
                 maven {
@@ -245,9 +240,5 @@ afterEvaluate {
                 }
             }
         }
-    }
-
-    publish {
-        dependsOn(build)
     }
 }
