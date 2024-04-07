@@ -13,6 +13,7 @@ It also provides mods for several versions, which all do one thing: join a singl
 This way you can already run simple boot tests, checking whether the game will boot with your mod.
 
 Mc-Runtime-Test currently supports the following Minecraft versions and modloaders:
+You can configure it to use any other version, but in that case you need to set `mc_runtime_test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
 | Version  | Forge | Fabric | NeoForge | 
 | :-: | :-: | :-: | :-: |
 | 1.20.2 - 1.20.4  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
