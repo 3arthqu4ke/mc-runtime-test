@@ -1,27 +1,32 @@
-name: Build specific version
+name: Build specific version reusable
 on:
-    workflow_dispatch:
+    workflow_call:
       inputs:
         dir:
           description: 'The directory to build in'
           required: true
           default: '1_20'
+          type: string
         mc:
           description: 'The Minecraft version to build'
           required: true
           default: '1.20.4'
+          type: string
         lex:
           description: 'The LexForge version to use'
           required: true
           default: '49.0.38'
+          type: string
         neo:
           description: 'The NeoForge version to use'
           required: true
           default: '219'
+          type: string
         java:
           description: 'The Java version to use'
           required: true
           default: '17'
+          type: string
           
 jobs:
     build:
@@ -30,11 +35,11 @@ jobs:
         -   uses: actions/checkout@v4
         -   uses: actions/setup-java@v2
             with:
-                java-version: ${{ github.event.inputs.java }}
+                java-version: ${{ inputs.java }}
                 distribution: adopt
         -   name: Grant execute permission for gradlew
-            working-directory: ./${{ github.event.inputs.dir }}
+            working-directory: ./${{ inputs.dir }}
             run: chmod +x gradlew
         -   name: Build
-            working-directory: ./${{ github.event.inputs.dir }}
-            run: ./gradlew build -Pminecraft_version=${{ github.event.inputs.mc }} -Plexforge_version=${{ github.event.inputs.lex }} -Pneoforge_version=${{ github.event.inputs.neo }}
+            working-directory: ./${{ inputs.dir }}
+            run: ./gradlew build -Pminecraft_version=${{ inputs.mc }} -Plexforge_version=${{ inputs.lex }} -Pneoforge_version=${{ inputs.neo }}
