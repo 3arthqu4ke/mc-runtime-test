@@ -11,7 +11,7 @@ jobs:
           version: [ {mc: 1.18.2, lex: 40.2.18} ]
           #version: [ {mc: 1.18.2, lex: 40.2.18}, {mc: 1.18.1, lex: 39.1.2}, {mc: 1.18, lex: 38.0.17} ]
       steps:
-        -   uses: actions/checkout@v2
+        -   uses: actions/checkout@v4
         -   uses: actions/setup-java@v2
             with:
                 java-version: 17

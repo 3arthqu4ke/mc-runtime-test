@@ -10,7 +10,7 @@ jobs:
         matrix:
           version: [ {mc: 1.12.2, lex: 14.23.5.2860} ]
       steps:
-        -   uses: actions/checkout@v2
+        -   uses: actions/checkout@v4
         -   uses: actions/setup-java@v2
             with:
                 java-version: 8
