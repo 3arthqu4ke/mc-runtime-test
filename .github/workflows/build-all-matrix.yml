@@ -1,4 +1,4 @@
-name: Build all versions
+name: Build All
 on:
     workflow_dispatch:
     workflow_call:
