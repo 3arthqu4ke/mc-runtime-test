@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  RunMinecraft:
+  run:
     strategy:
       matrix:
         version:
