@@ -1,0 +1,12 @@
+name: Test the run action
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Local Action Call
+        id: local-action
+        uses: ./.github/actions/local-action

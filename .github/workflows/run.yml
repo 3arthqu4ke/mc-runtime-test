@@ -22,6 +22,11 @@ on:
         required: true
         default: '17'
         type: string
+      dummy_assets:
+        description: 'Whether to use Dummy Assets or not'
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   run:
@@ -45,6 +50,7 @@ jobs:
       -   name: Configure Failing on wrong command
           run: echo hmc.exit.on.failed.command=true >> HeadlessMC/config.properties
       -   name: Configure Dummy Assets
+          if: ${{ inputs.dummy_assets == 'true' }}
           run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
       -   name: Get HeadlessMC
           run: wget -O headlessmc-launcher-1.9.5.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.5/headlessmc-launcher-1.9.5.jar
