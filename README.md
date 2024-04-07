@@ -18,6 +18,19 @@ The [fabric.yml](.github/workflows/fabric.yml) Github Action then builds the mod
 Right away, it caught a bug that I was not warned about at compile time: my mixin config still contained old deleted mixins, causing my game to crash.
 A successful run can be found [here](https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8521206581/job/23338896409).
 
+Mc-Runtime-Test currently supports the following Minecraft versions and modloaders:
+| Version  | Forge | Fabric | NeoForge | 
+| :-: | :-: | :-: | :-: |
+| 1.20.2 - 1.20.4  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
+| 1.20.1  | :white_check_mark:  | :white_check_mark:  | :warning:  |
+| 1.19 - 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.18.2  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.17.1  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.16.5  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.12.2  | :white_check_mark:  | :warning:  | - |
+| 1.8.9  | :white_check_mark:  | :warning:  | - |
+| 1.7.18  | :white_check_mark:  | :warning:  | - |
+
 ## TODOs and thoughts
 - Make Fabric/Forge not show a screen when an exception occurs, but crash properly. (https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8543522919)
 - Fix status http 429, too many requests, when downloading assets (3arthqu4ke/headlessmc#136).
