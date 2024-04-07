@@ -104,6 +104,8 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+
+    jarLibs project(':api')
 }
 
 for (String platform_capitalized : ['Fabric', 'Lexforge']) {

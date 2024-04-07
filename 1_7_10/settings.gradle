@@ -25,4 +25,7 @@ pluginManagement {
     }
 }
 
+include 'api'
+project(':api').projectDir = file('../api')
+
 rootProject.name = 'mc-runtime-test'
