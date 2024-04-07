@@ -1,5 +1,9 @@
 name: Run all versions
 on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
   workflow_dispatch:
   workflow_call:
 
