@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'me.earth'
-version '0.1.0'
+version "$minecraft_version-1.0.0"
 
 base {
     archivesName = 'mc-runtime-test'
