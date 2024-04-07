@@ -66,3 +66,6 @@ MC-Runtime-Test does not provide a framework for proper game tests (yet?).
 With the mc-runtime-test mod jars you can only test if your game can boot into a world.
 To write your own tests you need to build a mod that contains some form of tests, e.g. checking some value each tick, and put that jar in `run/mods` inside your workflow.
 One idea for to help with this be to use a @Pseudo mixin on the McRuntimeTest class.
+
+# Credits
+[unimined](https://github.com/unimined/unimined) by [wagyourtail](https://github.com/wagyourtail), a gradle plugin allowing us to support multiple modloaders, has greatly accelerated the development of mc-runtime-test
