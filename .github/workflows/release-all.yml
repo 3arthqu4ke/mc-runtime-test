@@ -63,5 +63,5 @@ jobs:
             if: startsWith(github.ref, 'refs/tags/')
             with:
               files: |
-                *-release.jar
-                *-api*.jar
+                ./merged-artifacts/*-release.jar
+                ./merged-artifacts/*-api*.jar
