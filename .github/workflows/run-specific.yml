@@ -54,13 +54,13 @@ jobs:
             -   name: Configure Dummy Assets
                 run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
-                run: wget -O headlessmc-launcher-1.9.4.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.4/headlessmc-launcher-1.9.4.jar
+                run: wget -O headlessmc-launcher-1.9.5.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.5/headlessmc-launcher-1.9.5.jar
             -   name: Download ${{ github.event.inputs.mc }}
-                run: java -jar headlessmc-launcher-1.9.4.jar --command download ${{ github.event.inputs.mc }}
+                run: java -jar headlessmc-launcher-1.9.5.jar --command download ${{ github.event.inputs.mc }}
             -   name: Download ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }}
-                run: java -jar headlessmc-launcher-1.9.4.jar --command ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }} --java ${{ github.event.inputs.java }}
+                run: java -jar headlessmc-launcher-1.9.5.jar --command ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }} --java ${{ github.event.inputs.java }}
             -   name: List versions
-                run: java -jar headlessmc-launcher-1.9.4.jar --command versions
+                run: java -jar headlessmc-launcher-1.9.5.jar --command versions
             -   name: Make mods dir
                 run: mkdir -p run/mods
             -   name: Configure Accessibility
@@ -73,4 +73,4 @@ jobs:
             -   name: LS mods dir
                 run: ls run/mods
             -   name: Run game
-                run: java -jar headlessmc-launcher-1.9.4.jar --command launch ${{ github.event.inputs.regex }} -regex -lwjgl --jvm -Djava.awt.headless=true
+                run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ github.event.inputs.regex }} -regex -lwjgl --jvm -Djava.awt.headless=true
