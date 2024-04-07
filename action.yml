@@ -1,5 +1,10 @@
-name: 'Run the MC Client with MC-Runtime-Test'
-description: 'Runs the MC client'
+name: 'Mc-Runtime-Test'
+description: 'Runs the MC client inside your CI.'
+author: 3arthqu4ke
+branding:
+  icon: play
+  color: green
+  
 inputs:
     mc:
       description: 'The MC version to run'
