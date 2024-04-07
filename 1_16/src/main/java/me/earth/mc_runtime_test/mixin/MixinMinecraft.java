@@ -1,10 +1,7 @@
 package me.earth.mc_runtime_test.mixin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ErrorScreen;
-import net.minecraft.client.gui.screens.Overlay;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.*;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -47,6 +44,8 @@ public abstract class MixinMinecraft {
         if (screen instanceof ErrorScreen) {
             running = false;
             throw new RuntimeException("Error Screen " + screen);
+        } else if (screen instanceof DeathScreen && player != null) {
+            player.respawn();
         }
     }
 

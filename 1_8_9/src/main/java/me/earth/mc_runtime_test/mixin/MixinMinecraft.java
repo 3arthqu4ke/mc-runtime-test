@@ -3,6 +3,7 @@ package me.earth.mc_runtime_test.mixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiErrorScreen;
+import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -43,6 +44,8 @@ public abstract class MixinMinecraft {
         if (guiScreenIn instanceof GuiErrorScreen) {
             running = false;
             throw new RuntimeException("Error Screen " + guiScreenIn);
+        } else if (guiScreenIn instanceof GuiGameOver && thePlayer != null) {
+            thePlayer.respawnPlayer();
         }
     }
 
