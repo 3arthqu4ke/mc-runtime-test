@@ -43,8 +43,3 @@ jobs:
         -   name: Build
             working-directory: ./${{ inputs.dir }}
             run: ./gradlew build -Pminecraft_version=${{ inputs.mc }} -Plexforge_version=${{ inputs.lex }} -Pneoforge_version=${{ inputs.neo }}
-        -   name: Upload Jars
-            uses: actions/upload-artifact@v4
-            with:
-              name: Artifacts
-              path: ./${{ inputs.dir }}/build/libs/*.jar

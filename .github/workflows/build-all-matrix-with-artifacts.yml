@@ -1,0 +1,46 @@
+name: Build All With Artifacts
+on:
+    workflow_dispatch:
+    workflow_call:
+
+jobs:
+    RunMinecraft:
+        strategy:
+            matrix:
+                version:
+                    - { dir: api, mc: api, lex: api, neo: api, java: 8 }
+                    - { dir: 1_20, mc: 1.20.4, lex: 49.0.38, neo: 219, java: 17 }
+                    - { dir: 1_20, mc: 1.20.3, lex: 49.0.2, neo: 8-beta, java: 17 }
+                    - { dir: 1_20, mc: 1.20.2, lex: 48.1.0, neo: 88, java: 17 }
+                    - { dir: 1_20/1_20_1, mc: 1.20.1, lex: 47.2.23, neo: 0, java: 17 }
+                    - { dir: 1_19, mc: 1.19.4, lex: 45.2.9, neo: 0, java: 17 }
+                    - { dir: 1_19, mc: 1.19.3, lex: 44.1.23, neo: 0, java: 17 }
+                    - { dir: 1_19, mc: 1.19.2, lex: 43.3.9, neo: 0, java: 17 }
+                    - { dir: 1_19, mc: 1.19.1, lex: 42.0.9, neo: 0, java: 17 }
+                    - { dir: 1_19, mc: 1.19, lex: 41.1.0, neo: 0, java: 17 }
+                    - { dir: 1_18, mc: 1.18.2, lex: 40.2.18, neo: 0, java: 17 }
+                    - { dir: 1_17, mc: 1.17.1, lex: 37.1.1, neo: 0, java: 16 }
+                    - { dir: 1_16, mc: 1.16.5, lex: 36.2.42, neo: 0, java: 8 }
+                    - { dir: 1_12, mc: 1.12.2, lex: 14.23.5.2860, neo: 0, java: 8 }
+                    - { dir: 1_8_9, mc: 1.8.9, lex: 11.15.1.2318-1.8.9, neo: 0, java: 8 }
+                    - { dir: 1_7_10, mc: 1.7.10, lex: 10.13.4.1614-1.7.10, neo: 0, java: 8 }
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Run Build
+            uses: ./.github/workflows/build-specific-reusable.yml
+            with:
+                dir: ${{ matrix.version.dir }}
+                mc: ${{ matrix.version.mc }}
+                lex: ${{ matrix.version.lex }}
+                neo: ${{ matrix.version.neo }}
+                java: ${{ matrix.version.java }}
+
+          - name: Archive artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ matrix.version.mc }}-Artifacts
+                path: ${{ matrix.version.dir }}/build/libs/*.jar
+                
