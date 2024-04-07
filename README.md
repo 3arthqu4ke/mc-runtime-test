@@ -41,7 +41,7 @@ jobs:
       # ... run actions to build your client
       # Copy the jar that you build to the mods folder
       - name: Copy mod jar to mods
-        run: cp ./build/libs/your-mod.jar ./run/mods/
+        run: mkdir -p run/mods && cp build/libs/hmc-optimizations-*-fabric.jar run/mods
       # Call this Action to run the client
       - name: Run the MC client
         uses: 3arthqu4ke/mc-runtime-test@1.0.0
