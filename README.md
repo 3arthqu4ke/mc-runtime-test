@@ -1,22 +1,16 @@
 # MC-Runtime-Test
-This project showcases how to run the Minecraft client headlessly in a CI/CD pipeline to conduct tests on it.
+> [!WARNING]
+> NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
 
-When coding Minecraft mods many bugs can only be caught by launching the entire single-player client and joining a world.
-Doing this manually, especially when developing against multiple minecraft versions and/or modloaders is laborious.
-Additionally, many (e.g. mapping or mixin related) bugs only occur when running against an instance that has been launched by a launcher, instead of some IDE or gradle task.
-Of course the idea to automate tests against running Minecraft clients/servers is not new, to name a few:
-Microsoft offers the GameTest framework, though I do not know Java Edition developers that use it and whether its usable in a CI/CD pipeline.
-SpongePowereds [McTester](https://github.com/SpongePowered/McTester) exists, but is now archived.
+This action runs the Minecraft client inside your CI/CD pipeline.
 
-The issue with running the client in a CI/CD pipeline is that it is running in a headless environment, so rendering related stuff will fail.
-To work around this we can provide patched versions of the rendering libraries.
-As far as I know, [baritone](https://github.com/cabaletta/baritone) has done this before, running the client with a patched lwjgl version on their travis-ci.
-We can do this too, by using [HeadlessMC](https://github.com/3arthqu4ke/headlessmc), a launcher specifically built to launch minecraft headlessly from the command line.
+When coding Minecraft mods many bugs can only be caught at runtime.
+Between many different versions and modloaders manual testing becomes laborious.
+Additionally, many (e.g. mapping or mixin related) bugs only occur when running against a Minecraft instance that has been launched by a launcher, instead of some IDE or gradle task.
 
-This project contains a simple 1.20.4 mod, which, after the game has launched, creates a new SinglePlayer world and waits for a short amount of time after the players chunk has loaded, then quits the game.
-The [fabric.yml](.github/workflows/fabric.yml) Github Action then builds the mod, and runs it on the fabric 1.20.4 client with headlessmc.
-Right away, it caught a bug that I was not warned about at compile time: my mixin config still contained old deleted mixins, causing my game to crash.
-A successful run can be found [here](https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8521206581/job/23338896409).
+This action runs the Minecraft client using the [HeadlessMC](https://github.com/3arthqu4ke/headlessmc) launcher, which patches the lwjgl library so that the game can run headlessly.
+It also provides mods for several versions, which all do one thing: join a single-player world, wait for chunks to load, and then quit the game after a few seconds.
+This way you can already run simple boot tests, checking whether the game will boot with your mod.
 
 Mc-Runtime-Test currently supports the following Minecraft versions and modloaders:
 | Version  | Forge | Fabric | NeoForge | 
@@ -31,11 +25,42 @@ Mc-Runtime-Test currently supports the following Minecraft versions and modloade
 | 1.8.9  | :white_check_mark:  | :warning:  | - |
 | 1.7.18  | :white_check_mark:  | :warning:  | - |
 
-## TODOs and thoughts
-- Make Fabric/Forge not show a screen when an exception occurs, but crash properly. (https://github.com/3arthqu4ke/mc-runtime-test/actions/runs/8543522919)
-- Fix status http 429, too many requests, when downloading assets (3arthqu4ke/headlessmc#136).
-- Expand this. Currently this is just a 1.20.4 example. To test headlessmc's lwjgl patching capabilities I would like to launch as many different minecraft versions as possible.  
-        - Can we do this while being mostly mc and mod launcher version agnostic?  
-        - Can we provide some sort of framework so noone has to write their own mod which loads into a world and does stuff?  
-              - Gradle plugin for sourceSet containing these runtime tests?  
-              - Github Action so noone has to maintain their own huge [fabric.yml](.github/workflows/fabric.yml).
+Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
+
+# Example
+```yml
+name: Run the MC client
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      # ... run actions to build your client
+      # Copy the jar that you build to the mods folder
+      - name: Copy mod jar to mods
+        run: cp -r build/libs/your-mod.jar run/mods/
+      # Call this Action to run the client
+      - name: Run the MC client
+        uses: 3arthqu4ke/mc-runtime-test@v1
+        with:
+          mc: 1.20.4
+          modloader: fabric
+          regex: .*fabric.*
+          java: 17
+```
+
+# Inputs
+- `mc`: The MC version to use, e.g. `1.20.4`.
+- `modloader`: The modloader to install with HeadlessMC (`forge`, `neoforge` or `fabric`).
+- `regex`: A Regex to match the MC version to launch (can in most cases just be `.*<modloader>.*`, like `.*fabric.*`, very old versions of forge might start with an uppercase `Forge`).
+- `java`: The Java version to use, e.g. `17`, we use the adopt distribution.
+- `dummy_assets`: HeadlessMC will use dummy assets to not download all the MC assets. Can be disabled by setting this to `false`.
+- `mc_runtime_test`: The MC-Runtime-Test jar to download (`none`, `lexforge`, `fabric` or `neoforge`). When using `none` you need to provide a way for the game to exit or the action will run indefinitely and time out.
+
+# Running your own tests
+MC-Runtime-Test does not provide a framework for proper game tests (yet?).
+With the mc-runtime-test mod jars you can only test if your game can boot into a world.
+To write your own tests you need to build a mod that contains some form of tests, e.g. checking some value each tick, and put that jar in `run/mods` inside your workflow.
+One idea for to help with this be to use a @Pseudo mixin on the McRuntimeTest class.
