@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'me.earth'
-version '0.2.0'
+version "$project_version"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8

@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'me.earth'
-version "$minecraft_version-0.2.0"
+version "$minecraft_version-${project(':api').project_version}"
 
 base {
     archivesName = 'mc-runtime-test'
