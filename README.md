@@ -44,13 +44,14 @@ jobs:
         run: cp -r build/libs/your-mod.jar run/mods/
       # Call this Action to run the client
       - name: Run the MC client
-        uses: 3arthqu4ke/mc-runtime-test@v1
+        uses: 3arthqu4ke/mc-runtime-test@1.0.0
         with:
           mc: 1.20.4
           modloader: fabric
           regex: .*fabric.*
           java: 17
 ```
+An example workflow in action can be found [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
 
 # Inputs
 - `mc`: The MC version to use, e.g. `1.20.4`.
