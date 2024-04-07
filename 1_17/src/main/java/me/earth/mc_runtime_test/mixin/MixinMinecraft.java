@@ -1,5 +1,6 @@
 package me.earth.mc_runtime_test.mixin;
 
+import me.earth.mc_runtime_test.McRuntimeTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
@@ -41,6 +42,10 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     private void setScreenHook(Screen screen, CallbackInfo ci) {
+        if (!McRuntimeTest.screenHook()) {
+            return;
+        }
+
         if (screen instanceof ErrorScreen) {
             running = false;
             throw new RuntimeException("Error Screen " + screen);
@@ -51,6 +56,10 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickHook(CallbackInfo ci) {
+        if (!McRuntimeTest.tickHook()) {
+            return;
+        }
+
         if (getOverlay() == null) {
             if (!mcRuntimeTest$startedLoadingSPWorld && getOverlay() == null) {
                 setScreen(CreateWorldScreen.create(new SelectWorldScreen(new TitleScreen())));

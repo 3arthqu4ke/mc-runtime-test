@@ -1,5 +1,6 @@
 package me.earth.mc_runtime_test.mixin;
 
+import me.earth.mc_runtime_test.McRuntimeTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiErrorScreen;
@@ -42,6 +43,10 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "displayGuiScreen", at = @At("HEAD"))
     private void displayGuiScreenHook(GuiScreen guiScreenIn, CallbackInfo ci) {
+        if (!McRuntimeTest.screenHook()) {
+            return;
+        }
+
         if (guiScreenIn instanceof GuiErrorScreen) {
             running = false;
             throw new RuntimeException("Error Screen " + guiScreenIn);
@@ -52,6 +57,10 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "runTick", at = @At("HEAD"))
     private void tickHook(CallbackInfo ci) {
+        if (!McRuntimeTest.tickHook()) {
+            return;
+        }
+
         if (currentScreen instanceof GuiMainMenu) {
             if (!mcRuntimeTest$startedLoadingSPWorld) {
                 mc_runtime_test$loadSinglePlayerWorld();
