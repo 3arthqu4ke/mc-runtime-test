@@ -1,9 +1,9 @@
-name: Run the Minecraft Client
+name: Run the MC Client
 on:
   workflow_call:
     inputs:
       mc:
-        description: 'The Minecraft version to run'
+        description: 'The MC version to run'
         required: true
         default: '1.20.4'
         type: string
@@ -13,7 +13,7 @@ on:
         default: 'forge'
         type: string
       regex:
-        description: 'Regex to match the Minecraft version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
+        description: 'Regex to match the MC version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
         required: true
         default: 'fabric.*1.20.4'
         type: string

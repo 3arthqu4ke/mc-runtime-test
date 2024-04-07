@@ -7,7 +7,7 @@ on:
           required: true
           default: '1_20'
         mc:
-          description: 'The Minecraft version to build'
+          description: 'The MC version to build'
           required: true
           default: '1.20.4'
         lex:

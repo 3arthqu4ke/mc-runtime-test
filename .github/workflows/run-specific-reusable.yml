@@ -1,4 +1,4 @@
-name: Run Minecraft Reusable
+name: Run MC Reusable
 on:
     workflow_call:
       inputs:
@@ -8,7 +8,7 @@ on:
           default: '1_20'
           type: string
         mc:
-          description: 'The Minecraft version to build'
+          description: 'The MC version to build'
           required: true
           default: '1.20.4'
           type: string
@@ -23,7 +23,7 @@ on:
           default: 'forge'
           type: string
         regex:
-          description: 'Regex to match the Minecraft version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
+          description: 'Regex to match the MC version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
           required: true
           default: 'fabric.*1.20.4'
           type: string

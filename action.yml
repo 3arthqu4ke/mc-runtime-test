@@ -1,4 +1,4 @@
-name: 'Local Run Action'
+name: 'Run the MC Client with MC-Runtime-Test'
 description: 'Runs the MC client'
 inputs:
     mc:
