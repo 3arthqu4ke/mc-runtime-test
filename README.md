@@ -24,7 +24,7 @@ You can configure it to use any other version, but in that case you need to set 
 | 1.16.5  | :white_check_mark:  | :white_check_mark:  | - |
 | 1.12.2  | :white_check_mark:  | :warning:  | - |
 | 1.8.9  | :white_check_mark:  | :warning:  | - |
-| 1.7.18  | :white_check_mark:  | :warning:  | - |
+| 1.7.10  | :white_check_mark:  | :warning:  | - |
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
 
