@@ -27,6 +27,8 @@ You can configure it to use any other version, but in that case you need to set 
 | 1.7.10  | :white_check_mark:  | :warning:  | - |
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
+> [!IMPORTANT]
+> Mc-Runtime-Test uses a patched version of lwjgl. It might be unstable if your mod does more exotic stuff with lwjgl.
 
 # Example
 ```yml
