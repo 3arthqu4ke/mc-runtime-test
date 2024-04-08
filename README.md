@@ -10,7 +10,7 @@ Additionally, many (e.g. mapping or mixin related) bugs only occur when running 
 
 This action runs the Minecraft client using the [HeadlessMC](https://github.com/3arthqu4ke/headlessmc) launcher.
 It uses Xvfb as a virtual framebuffer that allows us to run the game headlessly.
-HeadlessMC can also be used to patch the lwjgl lirbary.
+HeadlessMC can also be used to patch the lwjgl library.
 It also provides mods for several versions, which all do one thing: join a single-player world, wait for chunks to load, and then quit the game after a few seconds.
 This way you can already run simple boot tests, checking whether the game will boot with your mod.
 
