@@ -27,6 +27,11 @@ on:
           required: true
           default: '17'
           type: string
+        java-distribution:
+          description: 'The Java distribution to use'
+          required: false
+          default: 'adopt'
+          type: string
           
 jobs:
     build:
@@ -36,7 +41,7 @@ jobs:
         -   uses: actions/setup-java@v4
             with:
                 java-version: ${{ inputs.java }}
-                distribution: adopt
+                distribution: ${{ inputs.java-distribution }}
         -   name: Grant execute permission for gradlew
             working-directory: ./${{ inputs.dir }}
             run: chmod +x gradlew

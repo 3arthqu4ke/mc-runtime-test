@@ -59,7 +59,7 @@ An example workflow in action can be found [here](https://github.com/3arthqu4ke/
 - `mc`: The MC version to use, e.g. `1.20.4`.
 - `modloader`: The modloader to install with HeadlessMC (`forge`, `neoforge` or `fabric`).
 - `regex`: A Regex to match the MC version to launch (can in most cases just be `.*<modloader>.*`, like `.*fabric.*`, very old versions of forge might start with an uppercase `Forge`).
-- `java`: The Java version to use, e.g. `17`, we use the adopt distribution.
+- `java`: The Java version to use, e.g. `17`, by default we use the adopt distribution.
 - `dummy_assets`: HeadlessMC will use dummy assets to not download all the MC assets. Can be disabled by setting this to `false`.
 - `mc_runtime_test`: The MC-Runtime-Test jar to download (`none`, `lexforge`, `fabric` or `neoforge`). When using `none` you need to provide a way for the game to exit or the action will run indefinitely and time out.
 
