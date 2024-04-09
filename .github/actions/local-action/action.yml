@@ -87,7 +87,7 @@ runs:
       shell: bash
     - name: Download mc-runtime-test jar ${{ inputs.mc_runtime_test }}
       if: ${{ inputs.mc_runtime_test != 'none' }}
-      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.0.0-${{ inputs.mc_runtime_test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.0.0/mc-runtime-test-${{ inputs.mc }}-1.0.0-${{ inputs.mc_runtime_test }}-release.jar
+      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.1.0/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar
       shell: bash
     - name: Configure Accessibility
       run: echo onboardAccessibility:false >> run/options.txt

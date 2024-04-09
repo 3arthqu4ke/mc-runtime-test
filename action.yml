@@ -4,36 +4,44 @@ author: 3arthqu4ke
 branding:
   icon: play
   color: green
-  
+
 inputs:
-    mc:
-      description: 'The MC version to run'
-      required: true
-      default: '1.20.4'
-    modloader:
-      description: 'The modloader to install with HeadlessMc (forge, neoforge or fabric)'
-      required: true
-      default: 'fabric'
-    regex:
-      description: 'Regex to match the MC version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
-      required: true
-      default: '.*fabric.*'
-    java:
-      description: 'The Java version to use'
-      required: true
-      default: '17'
-    java-distribution:
-      description: 'The Java distribution to use'
-      required: false
-      default: 'adopt'
-    dummy_assets:
-      description: 'Whether to use Dummy Assets or not'
-      required: true
-      default: 'true'
-    mc_runtime_test:
-      description: 'The mc_runtime_test jar to download (none, lexforge, fabric or neoforge)'
-      required: true
-      default: 'fabric'
+  mc:
+    description: 'The MC version to run'
+    required: true
+    default: '1.20.4'
+  modloader:
+    description: 'The modloader to install with HeadlessMc (forge, neoforge or fabric)'
+    required: true
+    default: 'fabric'
+  regex:
+    description: 'Regex to match the MC version to launch (forge is like 1.20.4-forge and fabric starts with fabric-1.20)'
+    required: true
+    default: '.*fabric.*'
+  java:
+    description: 'The Java version to use'
+    required: true
+    default: '17'
+  java-distribution:
+    description: 'The Java distribution to use'
+    required: false
+    default: 'adopt'
+  dummy_assets:
+    description: 'Whether to use Dummy Assets or not'
+    required: true
+    default: 'true'
+  mc_runtime_test:
+    description: 'The mc_runtime_test jar to download (none, lexforge, fabric or neoforge)'
+    required: true
+    default: 'fabric'
+  xvfb:
+    description: 'Runs the game with Xvfb, if false, you should probably use the -lwjgl option in headlessmc.'
+    required: false
+    default: 'true'
+  headlessmc_command:
+    description: 'Arguments for the headlessmc command.'
+    required: false
+    default: '--jvm -Djava.awt.headless=true'
 
 runs:
   using: "composite"
@@ -81,7 +89,7 @@ runs:
       shell: bash
     - name: Download mc-runtime-test jar ${{ inputs.mc_runtime_test }}
       if: ${{ inputs.mc_runtime_test != 'none' }}
-      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.0.0-${{ inputs.mc_runtime_test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.0.0/mc-runtime-test-${{ inputs.mc }}-1.0.0-${{ inputs.mc_runtime_test }}-release.jar
+      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.1.0/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar
       shell: bash
     - name: Configure Accessibility
       run: echo onboardAccessibility:false >> run/options.txt
@@ -89,6 +97,12 @@ runs:
     - name: LS mods dir
       run: ls run/mods
       shell: bash
+    - name: Run game with xvfb
+      uses: modmuss50/xvfb-action@v1
+      if: ${{ inputs.xvfb == 'true' }}
+      with:
+        run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
     - name: Run game
-      run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex -lwjgl --jvm -Djava.awt.headless=true
+      if: ${{ inputs.xvfb != 'true' }}
+      run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
       shell: bash
