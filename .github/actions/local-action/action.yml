@@ -18,6 +18,10 @@ inputs:
     description: 'The Java version to use'
     required: true
     default: '17'
+  java-distribution:
+    description: 'The Java distribution to use'
+    required: false
+    default: 'adopt'
   dummy_assets:
     description: 'Whether to use Dummy Assets or not'
     required: true
@@ -43,7 +47,7 @@ runs:
     - uses: actions/setup-java@v4
       with:
         java-version: ${{ inputs.java }}
-        distribution: adopt
+        distribution: ${{ inputs.java-distribution }}
     - name: Setup HeadlessMC directory
       run: mkdir HeadlessMC
       shell: bash
