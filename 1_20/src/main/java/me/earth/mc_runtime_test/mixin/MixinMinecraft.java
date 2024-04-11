@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
@@ -62,7 +63,7 @@ public abstract class MixinMinecraft {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    private void tickHook(CallbackInfo ci) throws ExecutionException, InterruptedException {
+    private void tickHook(CallbackInfo ci) throws ExecutionException, InterruptedException, TimeoutException {
         if (!McRuntimeTest.tickHook()) {
             return;
         }
@@ -79,6 +80,7 @@ public abstract class MixinMinecraft {
             LOGGER.info("Waiting for overlay to disappear...");
         }
 
+        // TODO: detect SinglePlayerServer crash where game freezes?
         if (player != null && level != null) {
             if (screen == null) {
                 if (!level.getChunk(SectionPos.blockToSectionCoord(player.getBlockX()), SectionPos.blockToSectionCoord(player.getBlockZ())).isEmpty()) {

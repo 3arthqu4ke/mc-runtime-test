@@ -13,6 +13,10 @@ public class McRuntimeTest {
      * Whether to fail if an optional gametest fails or not.
      */
     public static final boolean GAME_TESTS_FAIL_ON_OPTIONAL = Boolean.parseBoolean(System.getProperty("McRuntimeGameTestFailOnOptional", "true"));
+    /**
+     * Fails if less game tests than this get found.
+     */
+    public static final int MIN_GAME_TESTS_TO_FIND = Integer.parseInt(System.getProperty("McRuntimeGameTestMinExpectedGameTests", "0"));
 
     /**
      * Our Hook in Minecrafts setScreen/displayGuiScreen.

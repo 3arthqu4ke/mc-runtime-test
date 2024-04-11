@@ -33,7 +33,7 @@ public class McGameTestRunner {
     public static MultipleTestTracker runGameTests(UUID playerUUID, MinecraftServer server) throws ExecutionException, InterruptedException, TimeoutException {
         return server.submit(() -> {
             Player player = Objects.requireNonNull(server.getPlayerList().getPlayer(playerUUID));
-            ServerLevel level = (ServerLevel) player.level();
+            ServerLevel level = (ServerLevel) player.level;
             GameTestRunner.clearMarkers(level);
             Collection<TestFunction> testFunctions = GameTestRegistry.getAllTestFunctions();
             LOGGER.info("TestFunctions: " + testFunctions);
