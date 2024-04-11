@@ -47,4 +47,4 @@ jobs:
       regex: ${{ matrix.version.regex }}
       java: ${{ matrix.version.java }}
       xvfb: false
-      headlessmc_command: -lwjgl --jvm -Djava.awt.headless=true
+      headlessmc-command: -lwjgl --jvm -Djava.awt.headless=true

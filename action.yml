@@ -26,19 +26,19 @@ inputs:
     description: 'The Java distribution to use'
     required: false
     default: 'adopt'
-  dummy_assets:
+  dummy-assets:
     description: 'Whether to use Dummy Assets or not'
     required: true
     default: 'true'
-  mc_runtime_test:
-    description: 'The mc_runtime_test jar to download (none, lexforge, fabric or neoforge)'
+  mc-runtime-test:
+    description: 'The mc-runtime-test jar to download (none, lexforge, fabric or neoforge)'
     required: true
     default: 'fabric'
   xvfb:
     description: 'Runs the game with Xvfb, if false, you should probably use the -lwjgl option in headlessmc.'
     required: false
     default: 'true'
-  headlessmc_command:
+  headlessmc-command:
     description: 'Arguments for the headlessmc command.'
     required: false
     default: '--jvm -Djava.awt.headless=true'
@@ -69,7 +69,7 @@ runs:
       run: echo hmc.exit.on.failed.command=true >> HeadlessMC/config.properties
       shell: bash
     - name: Configure Dummy Assets
-      if: ${{ inputs.dummy_assets == 'true' }}
+      if: ${{ inputs.dummy-assets == 'true' }}
       run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
       shell: bash
     - name: Get HeadlessMC
@@ -87,9 +87,9 @@ runs:
     - name: Make mods dir
       run: mkdir -p run/mods
       shell: bash
-    - name: Download mc-runtime-test jar ${{ inputs.mc_runtime_test }}
-      if: ${{ inputs.mc_runtime_test != 'none' }}
-      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.1.0/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc_runtime_test }}-release.jar
+    - name: Download mc-runtime-test jar ${{ inputs.mc-runtime-test }}
+      if: ${{ inputs.mc-runtime-test != 'none' }}
+      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc-runtime-test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.1.0/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc-runtime-test }}-release.jar
       shell: bash
     - name: Configure Accessibility
       run: echo onboardAccessibility:false >> run/options.txt
@@ -101,8 +101,8 @@ runs:
       uses: modmuss50/xvfb-action@v1
       if: ${{ inputs.xvfb == 'true' }}
       with:
-        run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
+        run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
     - name: Run game
       if: ${{ inputs.xvfb != 'true' }}
-      run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
+      run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
       shell: bash
