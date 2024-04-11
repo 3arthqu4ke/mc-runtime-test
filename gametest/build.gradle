@@ -115,7 +115,7 @@ dependencies {
     // yes. include. this is just for testing purposes.
     // fabricInclude "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     // we need to include this specifically?!
-    fabricInclude "net.fabricmc.fabric-api:fabric-gametest-api-v1:${project.fabric_api_version}"
+    fabricInclude "net.fabricmc.fabric-api:fabric-gametest-api-v1:${project.fabric_gametest_api_version}"
 }
 
 afterEvaluate {
