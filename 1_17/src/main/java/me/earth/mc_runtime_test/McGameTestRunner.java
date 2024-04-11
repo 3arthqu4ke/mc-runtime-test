@@ -1,6 +1,5 @@
 package me.earth.mc_runtime_test;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.server.MinecraftServer;
@@ -8,7 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException;
  * Similar to running the "/test runall" command.
  */
 public class McGameTestRunner {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Basically what happens in {@link TestCommand} when "runall" is used.
@@ -33,7 +33,7 @@ public class McGameTestRunner {
     public static MultipleTestTracker runGameTests(UUID playerUUID, MinecraftServer server) throws ExecutionException, InterruptedException, TimeoutException {
         return server.submit(() -> {
             Player player = Objects.requireNonNull(server.getPlayerList().getPlayer(playerUUID));
-            ServerLevel level = (ServerLevel) player.level();
+            ServerLevel level = (ServerLevel) player.level;
             GameTestRunner.clearMarkers(level);
             Collection<TestFunction> testFunctions = GameTestRegistry.getAllTestFunctions();
             LOGGER.info("TestFunctions: " + testFunctions);
