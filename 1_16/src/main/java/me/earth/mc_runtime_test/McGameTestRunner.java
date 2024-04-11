@@ -46,7 +46,7 @@ public class McGameTestRunner {
 
             BlockPos pos = createTestPositionAround(player, level);
             Rotation rotation = StructureUtils.getRotationForRotationSteps(0);
-            Collection<GameTestInfo> tests = GameTestRunner.runTests(testFunctions, pos, rotation, level, GameTestTicker.SINGLETON, 8);
+            Collection<GameTestInfo> tests = GameTestRunner.runTests(testFunctions, pos, rotation, level, GameTestTicker.singleton, 8);
             MultipleTestTracker multipleTestTracker = new MultipleTestTracker(tests);
             multipleTestTracker.addFailureListener(gameTestInfo -> {
                 LOGGER.error("Test failed: " + gameTestInfo);
