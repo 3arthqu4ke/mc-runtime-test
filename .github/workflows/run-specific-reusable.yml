@@ -42,7 +42,7 @@ on:
         required: false
         default: 'true'
         type: string
-      headlessmc_command:
+      headlessmc-command:
         description: 'Arguments for the headlessmc command.'
         required: false
         default: '--jvm -Djava.awt.headless=true'
@@ -97,8 +97,8 @@ jobs:
         uses: modmuss50/xvfb-action@v1
         if: ${{ inputs.xvfb == 'true' }}
         with:
-          run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
+          run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
       - name: Run game
         if: ${{ inputs.xvfb != 'true' }}
-        run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc_command }}
+        run: java -jar headlessmc-launcher-1.9.5.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
         shell: bash

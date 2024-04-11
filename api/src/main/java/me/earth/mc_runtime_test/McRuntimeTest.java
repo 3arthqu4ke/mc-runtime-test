@@ -6,6 +6,19 @@ package me.earth.mc_runtime_test;
  */
 public class McRuntimeTest {
     /**
+     * Whether to run Minecrafts game tests or not.
+     */
+    public static final boolean RUN_GAME_TESTS = Boolean.parseBoolean(System.getProperty("McRuntimeGameTest", "true"));
+    /**
+     * Whether to fail if an optional gametest fails or not.
+     */
+    public static final boolean GAME_TESTS_FAIL_ON_OPTIONAL = Boolean.parseBoolean(System.getProperty("McRuntimeGameTestFailOnOptional", "true"));
+    /**
+     * Fails if less game tests than this get found.
+     */
+    public static final int MIN_GAME_TESTS_TO_FIND = Integer.parseInt(System.getProperty("McRuntimeGameTestMinExpectedGameTests", "0"));
+
+    /**
      * Our Hook in Minecrafts setScreen/displayGuiScreen.
      * If an error screen is displayed we make Minecraft exit.
      * If a DeathScreen is displayed we respawn the player.

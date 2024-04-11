@@ -1,5 +1,6 @@
 package me.earth.mc_runtime_test.mixin;
 
+import me.earth.mc_runtime_test.McGameTestRunner;
 import me.earth.mc_runtime_test.McRuntimeTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
@@ -9,6 +10,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.SectionPos;
+import net.minecraft.gametest.framework.MultipleTestTracker;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -19,7 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
@@ -34,6 +38,8 @@ public abstract class MixinMinecraft {
     private boolean mcRuntimeTest$startedLoadingSPWorld = false;
     @Unique
     private boolean mcRuntimeTest$worldCreationStarted = false;
+    @Unique
+    private MultipleTestTracker mcRuntimeTest$testTracker = null;
 
     @Shadow
     public abstract @Nullable Overlay getOverlay();
@@ -55,7 +61,7 @@ public abstract class MixinMinecraft {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    private void tickHook(CallbackInfo ci) {
+    private void tickHook(CallbackInfo ci) throws ExecutionException, InterruptedException, TimeoutException {
         if (!McRuntimeTest.tickHook()) {
             return;
         }
@@ -77,10 +83,23 @@ public abstract class MixinMinecraft {
                 if (!level.getChunk(SectionPos.blockToSectionCoord(player.getBlockX()), SectionPos.blockToSectionCoord(player.getBlockZ())).isEmpty()) {
                     if (player.tickCount < 100) {
                         LOGGER.info("Waiting " + (100 - player.tickCount) + " ticks before testing...");
-                    } else {
-                        LOGGER.info("Test successful!");
-                        assertTrue(true);
+                    } else if (mcRuntimeTest$testTracker == null) {
+                        if (McRuntimeTest.RUN_GAME_TESTS) {
+                            LOGGER.info("Running game tests...");
+                            mcRuntimeTest$testTracker = McGameTestRunner.runGameTests(player.getUUID(), Objects.requireNonNull(singleplayerServer));
+                        } else {
+                            LOGGER.info("Successfully finished.");
+                            running = false;
+                        }
+                    } else if (mcRuntimeTest$testTracker.isDone()) {
+                        if (mcRuntimeTest$testTracker.getFailedRequiredCount() > 0
+                            || mcRuntimeTest$testTracker.getFailedOptionalCount() > 0 && McRuntimeTest.GAME_TESTS_FAIL_ON_OPTIONAL) {
+                            System.exit(-1);
+                        }
+
                         running = false;
+                    } else {
+                        LOGGER.info("Waiting for GameTest: " + mcRuntimeTest$testTracker.getProgressBar());
                     }
                 } else {
                     LOGGER.info("Players chunk not yet loaded, " + player + ": cores: " + Runtime.getRuntime().availableProcessors()

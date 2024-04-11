@@ -15,7 +15,7 @@ It also provides mods for several versions, which all do one thing: join a singl
 This way you can already run simple boot tests, checking whether the game will boot with your mod.
 
 Mc-Runtime-Test currently supports the following Minecraft versions and modloaders:
-You can configure it to use any other version, but in that case you need to set `mc_runtime_test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
+You can configure it to use any other version, but in that case you need to set `mc-runtime-test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
 | Version  | Forge | Fabric | NeoForge | 
 | :-: | :-: | :-: | :-: |
 | 1.20.2 - 1.20.4  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
@@ -61,10 +61,10 @@ An example workflow in action can be found [here](https://github.com/3arthqu4ke/
 - `regex`: A Regex to match the MC version to launch (can in most cases just be `.*<modloader>.*`, like `.*fabric.*`, very old versions of forge might start with an uppercase `Forge`).
 - `java`: The Java version to use, e.g. `17`.
 - `java-distribution`: The [Java distribution](https://github.com/actions/setup-java?tab=readme-ov-file#supported-distributions) to use, by default we use the adopt distribution.
-- `dummy_assets`: HeadlessMC will use dummy assets to not download all the MC assets. Can be disabled by setting this to `false`.
-- `mc_runtime_test`: The MC-Runtime-Test jar to download (`none`, `lexforge`, `fabric` or `neoforge`). When using `none` you need to provide a way for the game to exit or the action will run indefinitely and time out.
+- `dummy-assets`: HeadlessMC will use dummy assets to not download all the MC assets. Can be disabled by setting this to `false`.
+- `mc-runtime-test`: The MC-Runtime-Test jar to download (`none`, `lexforge`, `fabric` or `neoforge`). When using `none` you need to provide a way for the game to exit or the action will run indefinitely and time out.
 - `xvfb`: If `true` (default), runs the game with Xvfb, if false, you should probably use the -lwjgl option in headlessmc.
-- `headlessmc_command`: Allows you to customize the arguments of the headlessmc command.
+- `headlessmc-command`: Allows you to customize the arguments of the headlessmc command.
 
 # Running your own tests
 MC-Runtime-Test does not provide a framework for proper game tests (yet?).
