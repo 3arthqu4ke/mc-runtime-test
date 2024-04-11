@@ -1,4 +1,4 @@
-name: Run latest version
+name: Run latest gametests
 on:
   workflow_dispatch:
   workflow_call:
