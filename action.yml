@@ -101,7 +101,7 @@ runs:
       shell: bash
     - name: Download fabric-api jar ${{ inputs.fabric-api }}
       if: ${{ inputs.fabric-api != 'none' }}
-      run: wget -O run/mods/fabric-api-${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}.jar https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}/fabric-api-${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}.jar
+      run: wget -O run/mods/fabric-api-${{ inputs.fabric-api }}+${{ inputs.mc }}.jar https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/${{ inputs.fabric-api }}+${{ inputs.mc }}/fabric-api-${{ inputs.fabric-api }}+${{ inputs.mc }}.jar
       shell: bash
     - name: Download fabric-gametest-api jar ${{ inputs.fabric-gametest-api }}
       if: ${{ inputs.fabric-gametest-api != 'none' }}
