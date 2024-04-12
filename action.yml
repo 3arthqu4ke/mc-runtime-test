@@ -42,6 +42,14 @@ inputs:
     description: 'Arguments for the headlessmc command.'
     required: false
     default: '--jvm -Djava.awt.headless=true'
+  fabric-api:
+    description: 'Downloads the Fabric-API from https://maven.fabricmc.net/. Supply the version (e.g. 0.97.0, or none)'
+    required: false
+    default: 'none'
+  fabric-gametest-api:
+    description: 'Downloads the Fabric-GameTest-API from https://maven.fabricmc.net/. Supply the version (e.g. 1.3.5+85d85a934f, or none)'
+    required: false
+    default: 'none'
 
 runs:
   using: "composite"
@@ -90,6 +98,14 @@ runs:
     - name: Download mc-runtime-test jar ${{ inputs.mc-runtime-test }}
       if: ${{ inputs.mc-runtime-test != 'none' }}
       run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc-runtime-test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/1.1.0/mc-runtime-test-${{ inputs.mc }}-1.1.0-${{ inputs.mc-runtime-test }}-release.jar
+      shell: bash
+    - name: Download fabric-api jar ${{ inputs.fabric-api }}
+      if: ${{ inputs.fabric-api != 'none' }}
+      run: wget -O run/mods/fabric-api-${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}.jar https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}/fabric-api-${{ inputs.fabric-api }}+${{ inputs.fabric-mc }}.jar
+      shell: bash
+    - name: Download fabric-gametest-api jar ${{ inputs.fabric-gametest-api }}
+      if: ${{ inputs.fabric-gametest-api != 'none' }}
+      run: wget -O run/mods/fabric-gametest-api-v1-${{ inputs.fabric-api }}.jar https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-gametest-api-v1/${{ inputs.fabric-api }}/fabric-gametest-api-v1-${{ inputs.fabric-api }}.jar
       shell: bash
     - name: Configure Accessibility
       run: echo onboardAccessibility:false >> run/options.txt
