@@ -72,3 +72,4 @@ jobs:
           headlessmc-command: --jvm "-Djava.awt.headless=true -DMcRuntimeGameTestMinExpectedGameTests=1"
           fabric-api: 0.97.0
           fabric-gametest-api: 1.3.5+85d85a934f
+          checkout: false
