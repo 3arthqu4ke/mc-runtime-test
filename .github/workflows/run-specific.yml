@@ -92,7 +92,7 @@ jobs:
         run: echo onboardAccessibility:false >> run/options.txt
       - name: Build
         working-directory: ./${{ github.event.inputs.dir }}
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
       - name: Copy mod
         run: cp ${{ github.event.inputs.dir }}/build/libs/mc-runtime-test-*-${{ github.event.inputs.type }}-release.jar run/mods
       - name: LS mods dir
