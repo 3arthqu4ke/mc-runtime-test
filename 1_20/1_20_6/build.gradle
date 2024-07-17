@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'java'
     id 'maven-publish'
-    id 'xyz.wagyourtail.unimined' version '1.1.1'
+    id 'xyz.wagyourtail.unimined' version '1.3.3'
 }
 
 group 'me.earth'
@@ -12,6 +12,11 @@ version "$minecraft_version-${project(':api').project_version}"
 
 base {
     archivesName = 'mc-runtime-test'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 sourceSets {
@@ -241,5 +246,12 @@ afterEvaluate {
                 }
             }
         }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release.set(17)
     }
 }
