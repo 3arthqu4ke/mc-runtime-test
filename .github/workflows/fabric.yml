@@ -30,13 +30,13 @@ jobs:
             -   name: Configure Dummy Assets
                 run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
             -   name: Get HeadlessMC
-                run: wget -O headlessmc-launcher-1.9.5.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.9.5/headlessmc-launcher-1.9.5.jar
+                run: wget -O headlessmc-launcher.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.10.2/headlessmc-launcher-1.10.2.jar
             -   name: Download 1.20.4
-                run: java -jar headlessmc-launcher-1.9.5.jar --command download 1.20.4
+                run: java -jar headlessmc-launcher.jar --command download 1.20.4
             -   name: Download Fabric 1.20.4
-                run: java -jar headlessmc-launcher-1.9.5.jar --command fabric 1.20.4
+                run: java -jar headlessmc-launcher.jar --command fabric 1.20.4
             -   name: List versions
-                run: java -jar headlessmc-launcher-1.9.5.jar --command versions
+                run: java -jar headlessmc-launcher.jar --command versions
             -   name: Make mods dir
                 run: mkdir -p run/mods
             -   name: Configure Accessibility
@@ -48,4 +48,4 @@ jobs:
             -   name: LS mods dir
                 run: ls run/mods
             -   name: Run game
-                run: java -jar headlessmc-launcher-1.9.5.jar --command launch fabric.*1.20.4 -regex -lwjgl --jvm -Djava.awt.headless=true
+                run: java -jar headlessmc-launcher.jar --command launch fabric.*1.20.4 -regex -lwjgl --jvm -Djava.awt.headless=true
