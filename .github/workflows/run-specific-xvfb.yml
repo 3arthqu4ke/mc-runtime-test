@@ -1,4 +1,4 @@
-name: Run MC with lwjgl
+name: Run MC with Xvfb
 on:
   workflow_dispatch:
     inputs:
@@ -33,7 +33,7 @@ on:
       headlessmc-command:
         description: 'Arguments for the headlessmc command.'
         required: false
-        default: '-lwjgl --jvm -Djava.awt.headless=true'
+        default: '--jvm -Djava.awt.headless=true'
         type: string
       download-hmc:
         description: 'Whether to download headlessmc or not, if not you need to provide a file called headlessmc-launcher.jar.'
@@ -92,7 +92,7 @@ jobs:
         run: cp ${{ github.event.inputs.dir }}/build/libs/mc-runtime-test-*-${{ github.event.inputs.type }}-release.jar run/mods
       - name: LS mods dir
         run: ls run/mods
-      - name: Run game
-        run: java -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
-        shell: bash
-      
+      - name: Run game with xvfb
+        uses: modmuss50/xvfb-action@v1
+        with:
+          run: java -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}

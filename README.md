@@ -21,6 +21,7 @@ Mc-Runtime-Test currently supports the following Minecraft versions and modloade
 You can configure it to use any other version, but in that case you need to set `mc-runtime-test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
 | Version  | Forge | Fabric | NeoForge | 
 | :-: | :-: | :-: | :-: |
+| 1.21  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.2 - 1.20.6  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.1  | :white_check_mark:  | :white_check_mark:  | :warning:  |
 | 1.19 - 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
@@ -70,6 +71,8 @@ An example workflow in action can be found [here](https://github.com/3arthqu4ke/
 - `headlessmc-command`: Allows you to customize the arguments of the headlessmc command.
 - `fabric-api`: Downloads the fabric-api. (Default is none, an example value would be 0.97.0, to download 0.97.0+\<mc\>)
 - `fabric-gametest-api`: Downloads the fabric-gametest-api to run gametests. (Default is none, an example value would be 1.3.5+85d85a934f).
+- `download-hmc`: Whether to download headlessmc or not, if not you need to supply a headlessmc-launcher.jar. Default is `true`.
+- `hmc-version`: The [headlessmc version](https://github.com/3arthqu4ke/headlessmc/releases) to download.
 
 # Running your own tests
 MC-Runtime-Test does not provide a framework for full integration tests.
