@@ -40,6 +40,16 @@ on:
         required: false
         default: '--jvm -Djava.awt.headless=true'
         type: string
+      download-hmc:
+        description: 'Whether to download headlessmc or not, if not you need to provide a file called headlessmc-launcher.jar.'
+        required: false
+        default: 'true'
+        type: string
+      hmc-version:
+        description: 'The version of headlessmc to download.'
+        required: false
+        default: '1.10.2'
+        type: string
 
 jobs:
   run:
@@ -68,13 +78,14 @@ jobs:
       - name: Configure Dummy Assets
         run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
       - name: Get HeadlessMC
-        run: wget -O headlessmc-launcher-1.10.1.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.10.1/headlessmc-launcher-1.10.1.jar
+        if: ${{ github.event.inputs.download-hmc == 'true' }}
+        run: wget -O headlessmc-launcher.jar https://github.com/3arthqu4ke/headlessmc/releases/download/${{ github.event.inputs.hmc-version }}/headlessmc-launcher-${{ github.event.inputs.hmc-version }}.jar
       - name: Download ${{ github.event.inputs.mc }}
-        run: java -jar headlessmc-launcher-1.10.1.jar --command download ${{ github.event.inputs.mc }}
+        run: java -jar headlessmc-launcher.jar --command download ${{ github.event.inputs.mc }}
       - name: Download ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }}
-        run: java -jar headlessmc-launcher-1.10.1.jar --command ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }} --java ${{ github.event.inputs.java }}
+        run: java -jar headlessmc-launcher.jar --command ${{ github.event.inputs.modloader }} ${{ github.event.inputs.mc }} --java ${{ github.event.inputs.java }}
       - name: List versions
-        run: java -jar headlessmc-launcher-1.10.1.jar --command versions
+        run: java -jar headlessmc-launcher.jar --command versions
       - name: Make mods dir
         run: mkdir -p run/mods
       - name: Configure Accessibility
@@ -90,9 +101,9 @@ jobs:
         uses: modmuss50/xvfb-action@v1
         if: ${{ github.event.inputs.xvfb == 'true' }}
         with:
-          run: java -jar headlessmc-launcher-1.10.1.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
+          run: java -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
       - name: Run game
         if: ${{ github.event.inputs.xvfb != 'true' }}
-        run: java -jar headlessmc-launcher-1.10.1.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
+        run: java -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
         shell: bash
       

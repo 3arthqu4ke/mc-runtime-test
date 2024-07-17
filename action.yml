@@ -50,6 +50,14 @@ inputs:
     description: 'Downloads the Fabric-GameTest-API from https://maven.fabricmc.net/. Supply the version (e.g. 1.3.5+85d85a934f, or none)'
     required: false
     default: 'none'
+  download-hmc:
+    description: 'Whether to download headlessmc or not, if not you need to provide a file called headlessmc-launcher.jar.'
+    required: false
+    default: 'true'
+  hmc-version:
+    description: 'The version of headlessmc to download.'
+    required: false
+    default: '1.10.2'
 
 runs:
   using: "composite"
@@ -81,16 +89,17 @@ runs:
       run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
       shell: bash
     - name: Get HeadlessMC
-      run: wget -O headlessmc-launcher-1.10.1.jar https://github.com/3arthqu4ke/headlessmc/releases/download/1.10.1/headlessmc-launcher-1.10.1.jar
+      if: ${{ inputs.download-hmc == 'true' }}
+      run: wget -O headlessmc-launcher.jar https://github.com/3arthqu4ke/headlessmc/releases/download/${{ inputs.hmc-version }}/headlessmc-launcher-${{ inputs.hmc-version }}.jar
       shell: bash
     - name: Download ${{ inputs.mc }}
-      run: java -jar headlessmc-launcher-1.10.1.jar --command download ${{ inputs.mc }}
+      run: java -jar headlessmc-launcher.jar --command download ${{ inputs.mc }}
       shell: bash
     - name: Download Fabric ${{ inputs.mc }}
-      run: java -jar headlessmc-launcher-1.10.1.jar --command ${{ inputs.modloader }} ${{ inputs.mc }} --java ${{ inputs.java }}
+      run: java -jar headlessmc-launcher.jar --command ${{ inputs.modloader }} ${{ inputs.mc }} --java ${{ inputs.java }}
       shell: bash
     - name: List versions
-      run: java -jar headlessmc-launcher-1.10.1.jar --command versions
+      run: java -jar headlessmc-launcher.jar --command versions
       shell: bash
     - name: Make mods dir
       run: mkdir -p run/mods
@@ -117,8 +126,8 @@ runs:
       uses: modmuss50/xvfb-action@v1
       if: ${{ inputs.xvfb == 'true' }}
       with:
-        run: java -jar headlessmc-launcher-1.10.1.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+        run: java -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
     - name: Run game
       if: ${{ inputs.xvfb != 'true' }}
-      run: java -jar headlessmc-launcher-1.10.1.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+      run: java -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
       shell: bash
