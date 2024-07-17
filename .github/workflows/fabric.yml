@@ -42,7 +42,7 @@ jobs:
             -   name: Configure Accessibility
                 run: echo onboardAccessibility:false >> run/options.txt
             -   name: Build
-                run: ./gradlew build
+                run: ./gradlew build --stacktrace
             -   name: Copy mod
                 run: cp build/libs/mc-runtime-test-*-fabric-release.jar run/mods
             -   name: LS mods dir

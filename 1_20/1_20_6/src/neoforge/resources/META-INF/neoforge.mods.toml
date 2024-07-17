@@ -1,0 +1,20 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "https://github.com/3arthqu4ke/mc-runtime-test"
+license = "MPL-2.0"
+
+[[mods]]
+modId = "mc_runtime_test"
+version = "${version}"
+displayName = "MC-Runtime-Test"
+authors = "3arthqu4ke"
+description = '''
+    Run tests on the Minecraft client at runtime
+'''
+
+[[dependencies.mc_runtime_test]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.5,1.20.6)"
+ordering = "NONE"
+side = "BOTH"

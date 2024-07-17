@@ -9,6 +9,8 @@ jobs:
             matrix:
                 version:
                     - { dir: api, mc: api, lex: api, neo: api, java: 8 }
+                    - { dir: 1_21, mc: 1.21, lex: 51.0.24, neo: 96-beta, java: 21 }
+                    - { dir: 1_20/1_20_6, mc: 1.20.6, lex: 50.1.10, neo: 119, java: 21 }
                     - { dir: 1_20, mc: 1.20.4, lex: 49.0.38, neo: 219, java: 17 }
                     - { dir: 1_20, mc: 1.20.3, lex: 49.0.2, neo: 8-beta, java: 17 }
                     - { dir: 1_20, mc: 1.20.2, lex: 48.1.0, neo: 88, java: 17 }
@@ -36,7 +38,7 @@ jobs:
               run: chmod +x gradlew
             - name: Build
               working-directory: ./${{ matrix.version.dir }}
-              run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }}
+              run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }} --stacktrace
             - name: Upload ${{ matrix.version.mc }} Jars
               uses: actions/upload-artifact@v4
               with:

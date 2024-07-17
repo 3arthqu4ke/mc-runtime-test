@@ -26,4 +26,4 @@ jobs:
       - name: Build with Gradle
         working-directory: ./api
         run: |
-          ./gradlew build
+          ./gradlew build --stacktrace
