@@ -20,4 +20,4 @@ jobs:
             run: chmod +x gradlew
         -   name: Build
             working-directory: ./1_20/1_20_6
-            run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }}
+            run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }} --stacktrace

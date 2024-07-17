@@ -47,4 +47,4 @@ jobs:
             run: chmod +x gradlew
         -   name: Build
             working-directory: ./${{ inputs.dir }}
-            run: ./gradlew build -Pminecraft_version=${{ inputs.mc }} -Plexforge_version=${{ inputs.lex }} -Pneoforge_version=${{ inputs.neo }}
+            run: ./gradlew build -Pminecraft_version=${{ inputs.mc }} -Plexforge_version=${{ inputs.lex }} -Pneoforge_version=${{ inputs.neo }} --stacktrace

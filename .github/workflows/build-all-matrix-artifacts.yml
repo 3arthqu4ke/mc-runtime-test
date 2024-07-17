@@ -38,7 +38,7 @@ jobs:
               run: chmod +x gradlew
             - name: Build
               working-directory: ./${{ matrix.version.dir }}
-              run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }}
+              run: ./gradlew build -Pminecraft_version=${{ matrix.version.mc }} -Plexforge_version=${{ matrix.version.lex }} -Pneoforge_version=${{ matrix.version.neo }} --stacktrace
             - name: Upload ${{ matrix.version.mc }} Jars
               uses: actions/upload-artifact@v4
               with:

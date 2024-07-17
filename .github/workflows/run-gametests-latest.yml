@@ -17,7 +17,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build Gametest
         working-directory: ./gametest
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: gametest-jars
@@ -36,7 +36,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build latest
         working-directory: ./1_20
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: latest-jars
