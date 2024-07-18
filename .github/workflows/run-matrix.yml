@@ -47,6 +47,7 @@ jobs:
           - { dir: 1_8_9, mc: 1.8.9, type: lexforge, modloader: forge, regex: .*orge.*, java: 8 }
           - { dir: 1_7_10, mc: 1.7.10, type: lexforge, modloader: forge, regex: .*orge.*, java: 8 }
     uses: 3arthqu4ke/mc-runtime-test/.github/workflows/run-specific-reusable.yml@main
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     with:
       dir: ${{ matrix.version.dir }}
       mc: ${{ matrix.version.mc }}
