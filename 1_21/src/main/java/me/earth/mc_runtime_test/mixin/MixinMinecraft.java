@@ -46,6 +46,9 @@ public abstract class MixinMinecraft {
     @Shadow
     public abstract @Nullable Overlay getOverlay();
 
+    @Shadow
+    public abstract void disconnect();
+
     @Inject(method = "setScreen", at = @At("HEAD"))
     private void setScreenHook(Screen screen, CallbackInfo ci) {
         if (!McRuntimeTest.screenHook()) {
@@ -53,7 +56,7 @@ public abstract class MixinMinecraft {
         }
 
         if (screen instanceof ErrorScreen) {
-            running = false;
+            mcRuntime$stop();
             throw new RuntimeException("Error Screen " + screen);
         } else if (screen instanceof DeathScreen && player != null) {
             player.respawn();
@@ -90,7 +93,7 @@ public abstract class MixinMinecraft {
                             mcRuntimeTest$testTracker = McGameTestRunner.runGameTests(player.getUUID(), Objects.requireNonNull(singleplayerServer));
                         } else {
                             LOGGER.info("Successfully finished.");
-                            running = false;
+                            mcRuntime$stop();
                         }
                     } else if (mcRuntimeTest$testTracker.isDone()) {
                         if (mcRuntimeTest$testTracker.getFailedRequiredCount() > 0
@@ -98,7 +101,7 @@ public abstract class MixinMinecraft {
                             System.exit(-1);
                         }
 
-                        running = false;
+                        mcRuntime$stop();
                     } else {
                         LOGGER.info("Waiting for GameTest: " + mcRuntimeTest$testTracker.getProgressBar());
                     }
@@ -112,6 +115,17 @@ public abstract class MixinMinecraft {
         } else {
             LOGGER.info("Waiting for player to load...");
         }
+    }
+
+    @Unique
+    private void mcRuntime$stop() {
+        IntegratedServer server = singleplayerServer;
+        if (server != null) {
+            disconnect();
+            server.halt(true);
+        }
+
+        running = false;
     }
 
 }
