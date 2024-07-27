@@ -125,8 +125,8 @@ public abstract class MixinMinecraft {
     private void mcRuntime$stop() {
         IntegratedServer server = singleplayerServer;
         if (server != null) {
-            this.disconnect();
             server.halt(true);
+            this.disconnect();
         }
 
         running = false;
