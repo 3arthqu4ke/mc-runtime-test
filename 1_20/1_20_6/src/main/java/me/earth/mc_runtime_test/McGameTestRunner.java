@@ -5,6 +5,7 @@ import net.minecraft.gametest.framework.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class McGameTestRunner {
      * @param playerUUID the uuid of the player.
      * @param server the server to run the tests on.
      */
-    public static MultipleTestTracker runGameTests(UUID playerUUID, MinecraftServer server) throws ExecutionException, InterruptedException, TimeoutException {
+    public static @Nullable MultipleTestTracker runGameTests(UUID playerUUID, MinecraftServer server) throws ExecutionException, InterruptedException, TimeoutException {
         return server.submit(() -> {
             Player player = Objects.requireNonNull(server.getPlayerList().getPlayer(playerUUID));
             ServerLevel level = (ServerLevel) player.level();
@@ -37,6 +38,8 @@ public class McGameTestRunner {
             if (testFunctions.size() < McRuntimeTest.MIN_GAME_TESTS_TO_FIND) {
                 LOGGER.error("Failed to find the minimum amount of gametests, expected " + McRuntimeTest.MIN_GAME_TESTS_TO_FIND + ", but found " + testFunctions.size());
                 throw new IllegalStateException("Failed to find the minimum amount of gametests, expected " + McRuntimeTest.MIN_GAME_TESTS_TO_FIND + ", but found " + testFunctions.size());
+            } else if (testFunctions.isEmpty()) {
+                return null;
             }
 
             GameTestRegistry.forgetFailedTests();

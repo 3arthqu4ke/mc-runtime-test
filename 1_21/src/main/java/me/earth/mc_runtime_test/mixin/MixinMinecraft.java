@@ -91,6 +91,11 @@ public abstract class MixinMinecraft {
                         if (McRuntimeTest.RUN_GAME_TESTS) {
                             LOGGER.info("Running game tests...");
                             mcRuntimeTest$testTracker = McGameTestRunner.runGameTests(player.getUUID(), Objects.requireNonNull(singleplayerServer));
+                            if (mcRuntimeTest$testTracker == null) {
+                                mcRuntimeTest$testTracker = new MultipleTestTracker();
+                                LOGGER.info("No tests found, Successfully finished.");
+                                mcRuntime$stop();
+                            }
                         } else {
                             LOGGER.info("Successfully finished.");
                             mcRuntime$stop();
