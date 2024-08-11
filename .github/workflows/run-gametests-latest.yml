@@ -58,12 +58,12 @@ jobs:
         run: mkdir -p run/mods
       - name: Copy mod files
         run: |
-          cp gametest-jars/clientgametest-1.20.6-2.2.0-fabric.jar run/mods
-          cp gametest-jars/clientgametest-1.20.6-2.2.0-neoforge.jar run/mods
-          cp gametest-jars/clientgametest-1.20.6-2.2.0-lexforge.jar run/mods
-          cp latest-jars/mc-runtime-test-1.20.6-2.2.0-fabric-release.jar run/mods
-          cp latest-jars/mc-runtime-test-1.20.6-2.2.0-lexforge-release.jar run/mods
-          cp latest-jars/mc-runtime-test-1.20.6-2.2.0-neoforge-release.jar run/mods
+          cp gametest-jars/clientgametest-1.20.6-2.3.0-fabric.jar run/mods
+          cp gametest-jars/clientgametest-1.20.6-2.3.0-neoforge.jar run/mods
+          cp gametest-jars/clientgametest-1.20.6-2.3.0-lexforge.jar run/mods
+          cp latest-jars/mc-runtime-test-1.20.6-2.3.0-fabric-release.jar run/mods
+          cp latest-jars/mc-runtime-test-1.20.6-2.3.0-lexforge-release.jar run/mods
+          cp latest-jars/mc-runtime-test-1.20.6-2.3.0-neoforge-release.jar run/mods
       - name: Run game for version
         id: local-action
         uses: ./.github/actions/local-action

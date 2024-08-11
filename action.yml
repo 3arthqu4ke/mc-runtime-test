@@ -106,7 +106,7 @@ runs:
       shell: bash
     - name: Download mc-runtime-test jar ${{ inputs.mc-runtime-test }}
       if: ${{ inputs.mc-runtime-test != 'none' }}
-      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-2.2.0-${{ inputs.mc-runtime-test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/2.2.0/mc-runtime-test-${{ inputs.mc }}-2.2.0-${{ inputs.mc-runtime-test }}-release.jar
+      run: wget -O run/mods/mc-runtime-test-${{ inputs.mc }}-2.3.0-${{ inputs.mc-runtime-test }}-release.jar https://github.com/3arthqu4ke/mc-runtime-test/releases/download/2.3.0/mc-runtime-test-${{ inputs.mc }}-2.3.0-${{ inputs.mc-runtime-test }}-release.jar
       shell: bash
     - name: Download fabric-api jar ${{ inputs.fabric-api }}
       if: ${{ inputs.fabric-api != 'none' }}
