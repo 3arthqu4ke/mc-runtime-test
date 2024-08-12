@@ -9,7 +9,7 @@ jobs:
             matrix:
                 version:
                     - { dir: api, mc: api, lex: api, neo: api, java: 8 }
-                    - { dir: 1_21, mc: 1.21.1, lex: 51.0.33, neo: 4, java: 21 }
+                    - { dir: 1_21, mc: 1.21.1, lex: 52.0.2, neo: 4, java: 21 }
                     - { dir: 1_21, mc: 1.21, lex: 51.0.24, neo: 96-beta, java: 21 }
                     - { dir: 1_20/1_20_6, mc: 1.20.6, lex: 50.1.10, neo: 119, java: 21 }
                     - { dir: 1_20, mc: 1.20.4, lex: 49.0.38, neo: 219, java: 17 }
