@@ -77,7 +77,12 @@ jobs:
           mc-runtime-test: fabric
           java: 17
 ```
-An example workflow in action can be found [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
+An example workflow in action can be found
+[here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
+An example for a large matrix workflow
+which tests 20 different versions of Minecraft
+at once can be found 
+[here](https://github.com/3arthqu4ke/hmc-specifics/blob/main/.github/workflows/run-matrix.yml).
 
 # Inputs
 - `mc`: The MC version to use, e.g. `1.20.4`.
