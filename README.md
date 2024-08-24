@@ -33,9 +33,12 @@ registered.
 
 Mc-Runtime-Test currently supports the following Minecraft versions and modloaders:
 You can configure it to use any other version, but in that case you need to set `mc-runtime-test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
+
+<div align="center">
+  
 | Version  | Forge | Fabric | NeoForge | 
 | :-: | :-: | :-: | :-: |
-| 1.21  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
+| 1.21 - 1.21.1  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.2 - 1.20.6  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.1  | :white_check_mark:  | :white_check_mark:  | :warning:  |
 | 1.19 - 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
@@ -45,6 +48,8 @@ You can configure it to use any other version, but in that case you need to set 
 | 1.12.2  | :white_check_mark:  | :warning:  | - |
 | 1.8.9  | :white_check_mark:  | :warning:  | - |
 | 1.7.10  | :white_check_mark:  | :warning:  | - |
+
+</div>
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
 
@@ -64,7 +69,7 @@ jobs:
         run: mkdir -p run/mods && cp build/libs/<your-mod>.jar run/mods
       # Call this Action to run the client
       - name: Run the MC client
-        uses: 3arthqu4ke/mc-runtime-test@2.3.1
+        uses: 3arthqu4ke/mc-runtime-test@2.4.0
         with:
           mc: 1.20.4
           modloader: fabric
@@ -72,7 +77,12 @@ jobs:
           mc-runtime-test: fabric
           java: 17
 ```
-An example workflow in action can be found [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
+An example workflow in action can be found
+[here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
+An example for a large matrix workflow
+which tests 20 different versions of Minecraft
+at once can be found 
+[here](https://github.com/3arthqu4ke/hmc-specifics/blob/main/.github/workflows/run-matrix.yml).
 
 # Inputs
 - `mc`: The MC version to use, e.g. `1.20.4`.
