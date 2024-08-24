@@ -43,7 +43,7 @@ on:
       hmc-version:
         description: 'The version of headlessmc to download.'
         required: false
-        default: '1.10.2'
+        default: '2.1.0'
         type: string
 
 jobs:
