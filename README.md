@@ -38,7 +38,7 @@ You can configure it to use any other version, but in that case you need to set 
   
 | Version  | Forge | Fabric | NeoForge | 
 | :-: | :-: | :-: | :-: |
-| 1.21 - 1.21.1  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
+| 1.21 - 1.21.3  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.2 - 1.20.6  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
 | 1.20.1  | :white_check_mark:  | :white_check_mark:  | :warning:  |
 | 1.19 - 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
