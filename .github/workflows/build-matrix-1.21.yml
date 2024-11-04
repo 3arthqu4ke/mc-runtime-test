@@ -8,7 +8,7 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          version: [ {mc: 1.21, lex: 51.0.24, neo: 96-beta}, { mc: 1.21.1, lex: 52.0.2, neo: 4} ]
+          version: [ {mc: 1.21, lex: 51.0.24, neo: 96-beta}, { mc: 1.21.1, lex: 52.0.2, neo: 4}, {mc: 1.21.3, lex: 53.0.7, neo: 11-beta}]
       steps:
         -   uses: actions/checkout@v4
         -   uses: actions/setup-java@v4
