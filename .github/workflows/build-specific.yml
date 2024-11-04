@@ -42,3 +42,9 @@ jobs:
         -   name: Build
             working-directory: ./${{ github.event.inputs.dir }}
             run: ./gradlew build -Pminecraft_version=${{ github.event.inputs.mc }} -Plexforge_version=${{ github.event.inputs.lex }} -Pneoforge_version=${{ github.event.inputs.neo }} --stacktrace
+        - name: Publish jars
+          uses: actions/upload-artifact@v4
+          with:
+            name: Artifacts
+            path: |
+              ./${{ github.event.inputs.dir }}/build/libs/*.jar

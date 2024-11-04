@@ -61,3 +61,4 @@ jobs:
       modloader: ${{ matrix.version.modloader }}
       regex: ${{ matrix.version.regex }}
       java: ${{ matrix.version.java }}
+      headlessmc-command: '--retries 3 --jvm -Djava.awt.headless=true'
