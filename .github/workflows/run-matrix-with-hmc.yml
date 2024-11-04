@@ -8,6 +8,9 @@ jobs:
     strategy:
       matrix:
         version:
+          - { dir: 1_21, mc: 1.21.3, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
+          - { dir: 1_21, mc: 1.21.3, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
+          - { dir: 1_21, mc: 1.21.3, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
           - { dir: 1_21, mc: 1.21.1, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
           - { dir: 1_21, mc: 1.21.1, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
           - { dir: 1_21, mc: 1.21.1, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
