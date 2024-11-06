@@ -43,7 +43,7 @@ on:
       hmc-version:
         description: 'The version of headlessmc to download.'
         required: false
-        default: '2.1.0'
+        default: '2.3.1'
         type: string
 
 jobs:
@@ -95,4 +95,4 @@ jobs:
       - name: Run game with xvfb
         uses: modmuss50/xvfb-action@v1
         with:
-          run: java -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
+          run: java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
