@@ -126,10 +126,9 @@ runs:
       run: ls run/mods
       shell: bash
     - name: Run game with xvfb
-      uses: modmuss50/xvfb-action@v1
       if: ${{ inputs.xvfb == 'true' }}
-      with:
-        run: java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+      run: xvfb-run java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+      shell: bash
     - name: Run game
       if: ${{ inputs.xvfb != 'true' }}
       run: java -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
