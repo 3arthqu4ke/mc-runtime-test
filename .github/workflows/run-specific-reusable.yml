@@ -67,6 +67,7 @@ jobs:
         with:
           java-version: ${{ inputs.java }}
           distribution: ${{ inputs.java-distribution }}
+          cache: gradle
       - name: Grant execute permission for gradlew
         working-directory: ./${{ inputs.dir }}
         run: chmod +x gradlew
