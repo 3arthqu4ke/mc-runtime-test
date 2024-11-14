@@ -121,6 +121,7 @@ for (String platform_capitalized : ['Fabric', 'Lexforge']) {
         // Mixin is signed
         exclude 'META-INF/*.RSA'
         exclude 'META-INF/*.SF'
+        exclude "**/module-info.class"
     }
 
     tasks.named('build') { finalizedBy(shadowTask) }
