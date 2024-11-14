@@ -25,12 +25,12 @@ import java.util.Random;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
-    @Shadow @Final private static Logger logger;
+    @Shadow @Final private static Logger LOGGER;
 
-    @Shadow private IntegratedServer theIntegratedServer;
+    @Shadow private IntegratedServer integratedServer;
     @Shadow public GuiScreen currentScreen;
-    @Shadow public EntityPlayerSP thePlayer;
-    @Shadow public WorldClient theWorld;
+    @Shadow public EntityPlayerSP player;
+    @Shadow public WorldClient world;
 
     @Shadow
     volatile boolean running;
@@ -50,8 +50,8 @@ public abstract class MixinMinecraft {
         if (guiScreenIn instanceof GuiErrorScreen) {
             running = false;
             throw new RuntimeException("Error Screen " + guiScreenIn);
-        } else if (guiScreenIn instanceof GuiGameOver && thePlayer != null) {
-            thePlayer.respawnPlayer();
+        } else if (guiScreenIn instanceof GuiGameOver && player != null) {
+            player.respawnPlayer();
         }
     }
 
@@ -67,27 +67,27 @@ public abstract class MixinMinecraft {
                 mcRuntimeTest$startedLoadingSPWorld = true;
             }
         } else {
-            logger.info("Waiting for overlay to disappear...");
+            LOGGER.info("Waiting for overlay to disappear...");
         }
 
-        if (thePlayer != null && theWorld != null) {
+        if (player != null && world != null) {
             if (currentScreen == null) {
-                if (!theWorld.getChunkFromChunkCoords(((int) thePlayer.posX) >> 4, ((int) thePlayer.posZ) >> 4).isEmpty()) {
-                    if (thePlayer.ticksExisted < 100) {
-                        logger.info("Waiting " + (100 - thePlayer.ticksExisted) + " ticks before testing...");
+                if (!world.getChunk(((int) player.posX) >> 4, ((int) player.posZ) >> 4).isEmpty()) {
+                    if (player.ticksExisted < 100) {
+                        LOGGER.info("Waiting " + (100 - player.ticksExisted) + " ticks before testing...");
                     } else {
-                        logger.info("Test successful!");
+                        LOGGER.info("Test successful!");
                         running = false;
                     }
                 } else {
-                    logger.info("Players chunk not yet loaded, " + thePlayer + ": cores: " + Runtime.getRuntime().availableProcessors()
-                            + ", server running: " + (theIntegratedServer == null ? "null" : theIntegratedServer.isServerRunning()));
+                    LOGGER.info("Players chunk not yet loaded, " + player + ": cores: " + Runtime.getRuntime().availableProcessors()
+                            + ", server running: " + (integratedServer == null ? "null" : integratedServer.isServerRunning()));
                 }
             } else {
-                logger.info("Screen not yet null: " + currentScreen);
+                LOGGER.info("Screen not yet null: " + currentScreen);
             }
         } else {
-            logger.info("Waiting for player to load...");
+            LOGGER.info("Waiting for player to load...");
         }
     }
 
