@@ -119,8 +119,8 @@ for (String platform_capitalized : ['Fabric', 'Neoforge', 'Lexforge']) {
         it.archiveClassifier = "${platform}-release"
         from remapJarTask.outputs
         it.configurations += [ project.configurations.jarLibs ]
+        exclude "**/module-info.class"
     }
-
     tasks.named('build') { finalizedBy(shadowTask) }
 }
 

@@ -55,7 +55,7 @@ on:
       hmc-version:
         description: 'The version of headlessmc to download.'
         required: false
-        default: '2.3.1'
+        default: '2.4.0'
         type: string
 
 jobs:
@@ -67,6 +67,7 @@ jobs:
         with:
           java-version: ${{ inputs.java }}
           distribution: ${{ inputs.java-distribution }}
+          cache: gradle
       - name: Grant execute permission for gradlew
         working-directory: ./${{ inputs.dir }}
         run: chmod +x gradlew
@@ -105,10 +106,9 @@ jobs:
       - name: LS mods dir
         run: ls run/mods
       - name: Run game with xvfb
-        uses: modmuss50/xvfb-action@v1
         if: ${{ inputs.xvfb == 'true' }}
-        with:
-          run: java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+        run: xvfb-run java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
+        shell: bash
       - name: Run game
         if: ${{ inputs.xvfb != 'true' }}
         run: java -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}
