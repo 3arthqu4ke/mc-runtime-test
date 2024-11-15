@@ -119,6 +119,9 @@ runs:
     - name: Configure Accessibility
       run: echo onboardAccessibility:false >> run/options.txt
       shell: bash
+    - name: Configure pauseOnLostFocus
+      run: echo pauseOnLostFocus:false >> run/options.txt
+      shell: bash
     - name: LS mods dir
       run: ls run/mods
       shell: bash

@@ -85,6 +85,8 @@ jobs:
         run: mkdir -p run/mods
       - name: Configure Accessibility
         run: echo onboardAccessibility:false >> run/options.txt
+      - name: Configure pauseOnLostFocus
+        run: echo pauseOnLostFocus:false >> run/options.txt
       - name: Build
         working-directory: ./${{ github.event.inputs.dir }}
         run: ./gradlew build --stacktrace
