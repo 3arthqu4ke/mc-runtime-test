@@ -105,6 +105,10 @@ jobs:
         run: cp ${{ inputs.dir }}/build/libs/mc-runtime-test-*-${{ inputs.type }}-release.jar run/mods
       - name: LS mods dir
         run: ls run/mods
+      - name: Install xrandr
+        if: ${{ inputs.xvfb == 'true' }}
+        run: sudo apt install x11-xserver-utils
+        shell: bash
       - name: Run game with xvfb
         if: ${{ inputs.xvfb == 'true' }}
         run: xvfb-run java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}

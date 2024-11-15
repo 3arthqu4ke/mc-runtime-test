@@ -125,6 +125,10 @@ runs:
     - name: LS mods dir
       run: ls run/mods
       shell: bash
+    - name: Install xrandr
+      if: ${{ inputs.xvfb == 'true' }}
+      run: sudo apt install x11-xserver-utils
+      shell: bash
     - name: Run game with xvfb
       if: ${{ inputs.xvfb == 'true' }}
       run: xvfb-run java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ inputs.regex }} -regex ${{ inputs.headlessmc-command }}

@@ -92,6 +92,9 @@ jobs:
         run: cp ${{ github.event.inputs.dir }}/build/libs/mc-runtime-test-*-${{ github.event.inputs.type }}-release.jar run/mods
       - name: LS mods dir
         run: ls run/mods
+      - name: Install xrandr
+        run: sudo apt install x11-xserver-utils
+        shell: bash
       - name: Run game with xvfb
         run: xvfb-run java -Dhmc.check.xvfb=true -jar headlessmc-launcher.jar --command launch ${{ github.event.inputs.regex }} -regex ${{ github.event.inputs.headlessmc-command }}
         shell: bash
