@@ -57,7 +57,7 @@ inputs:
   hmc-version:
     description: 'The version of headlessmc to download.'
     required: false
-    default: '2.4.0'
+    default: '2.4.1'
 
 runs:
   using: "composite"
