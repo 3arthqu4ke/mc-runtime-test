@@ -73,7 +73,6 @@ jobs:
       - name: Configure Dummy Assets
         run: echo hmc.assets.dummy=true >> HeadlessMC/config.properties
       - name: Get HeadlessMC
-        if: ${{ github.event.inputs.download-hmc == 'true' }}
         run: wget -O headlessmc-launcher.jar https://github.com/3arthqu4ke/headlessmc/releases/download/${{ github.event.inputs.hmc-version }}/headlessmc-launcher-${{ github.event.inputs.hmc-version }}.jar
       - name: Download ${{ github.event.inputs.mc }}
         run: java -jar headlessmc-launcher.jar --command download ${{ github.event.inputs.mc }}
