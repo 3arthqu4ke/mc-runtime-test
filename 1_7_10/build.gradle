@@ -203,3 +203,11 @@ afterEvaluate {
         }
     }
 }
+
+remapFabricSourcesJar {
+    enabled = false
+}
+
+remapLexforgeSourcesJar {
+    enabled = false
+}
