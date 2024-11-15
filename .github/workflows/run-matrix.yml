@@ -31,6 +31,7 @@ jobs:
           - { dir: 1_12, mc: 1.12.2, lex: 14.23.5.2860, neo: 0, java: 8 }
           - { dir: 1_8_9, mc: 1.8.9, lex: 11.15.1.2318-1.8.9, neo: 0, java: 8 }
           - { dir: 1_7_10, mc: 1.7.10, lex: 10.13.4.1614-1.7.10, neo: 0, java: 8 }
+      fail-fast: false
     uses: 3arthqu4ke/mc-runtime-test/.github/workflows/build-specific-reusable.yml@main
     with:
       dir: ${{ matrix.version.dir }}
