@@ -17,6 +17,10 @@ public class McRuntimeTest {
      * Fails if less game tests than this get found.
      */
     public static final int MIN_GAME_TESTS_TO_FIND = Integer.parseInt(System.getProperty("McRuntimeGameTestMinExpectedGameTests", "0"));
+    /**
+     * TODO: Boots directly into a world without going through the world creation screens.
+     */
+    public static final boolean FAST_WORLD = Boolean.parseBoolean(System.getProperty("McRuntimeGameTestFastWorld", "false"));
 
     /**
      * Our Hook in Minecrafts setScreen/displayGuiScreen.
