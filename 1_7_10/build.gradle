@@ -31,8 +31,7 @@ sourceSets {
 
 repositories {
     maven {
-        name = "wagyourtail releases"
-        url = "https://maven.wagyourtail.xyz/releases"
+        url = "https://maven.fabricmc.net/"
     }
     maven {
         name = "sponge"
@@ -43,6 +42,10 @@ repositories {
         url = 'https://impactdevelopment.github.io/maven/'
     }
     mavenCentral()
+    maven {
+        name = "wagyourtail releases"
+        url = "https://maven.wagyourtail.xyz/releases"
+    }
 }
 
 unimined.minecraft {
