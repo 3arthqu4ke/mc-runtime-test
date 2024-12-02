@@ -83,7 +83,7 @@ public abstract class MixinMinecraft {
                 logger.info("Screen not yet null: " + currentScreen);
             }
         } else {
-            logger.info("Waiting for player to load...");
+            logger.info("Waiting for player to load, screen: " + currentScreen);
         }
     }
 

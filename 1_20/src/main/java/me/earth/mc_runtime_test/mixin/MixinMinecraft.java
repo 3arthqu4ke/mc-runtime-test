@@ -48,6 +48,9 @@ public abstract class MixinMinecraft {
     @Shadow
     public abstract @Nullable Overlay getOverlay();
 
+    @Shadow
+    public abstract void setScreen(@Nullable Screen screen);
+
     @Inject(method = "setScreen", at = @At("HEAD"))
     private void setScreenHook(Screen screen, CallbackInfo ci) {
         if (!McRuntimeTest.screenHook()) {
@@ -110,6 +113,10 @@ public abstract class MixinMinecraft {
                 }
             } else {
                 LOGGER.info("Screen not yet null: " + screen);
+                if (McRuntimeTest.CLOSE_ANY_SCREEN || McRuntimeTest.CLOSE_CREATE_WORLD_SCREEN && screen instanceof CreateWorldScreen) {
+                    LOGGER.info("Closing screen");
+                    setScreen(null);
+                }
             }
         } else {
             LOGGER.info("Waiting for player to load...");
