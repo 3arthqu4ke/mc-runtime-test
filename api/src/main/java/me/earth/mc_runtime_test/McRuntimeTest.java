@@ -21,6 +21,14 @@ public class McRuntimeTest {
      * TODO: Boots directly into a world without going through the world creation screens.
      */
     public static final boolean FAST_WORLD = Boolean.parseBoolean(System.getProperty("McRuntimeGameTestFastWorld", "false"));
+    /**
+     * Close the CreateWorldScreen if player and world have been loaded. Prevents flaky 1.19-1.19.3 tests that get stuck on the CreateWorldScreen.
+     */
+    public static final boolean CLOSE_CREATE_WORLD_SCREEN = Boolean.parseBoolean(System.getProperty("McRuntimeGameCloseCreateWorldScreen", "true"));
+    /**
+     * Same as {@link #CLOSE_CREATE_WORLD_SCREEN} but for any screen displayed after world and player have been loaded.
+     */
+    public static final boolean CLOSE_ANY_SCREEN = Boolean.parseBoolean(System.getProperty("McRuntimeGameTestCloseAnyScreen", "false"));
 
     /**
      * Our Hook in Minecrafts setScreen/displayGuiScreen.

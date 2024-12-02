@@ -107,6 +107,10 @@ public abstract class MixinMinecraft {
                 }
             } else {
                 LOGGER.info("Screen not yet null: " + screen);
+                if (McRuntimeTest.CLOSE_ANY_SCREEN || McRuntimeTest.CLOSE_CREATE_WORLD_SCREEN && screen instanceof CreateWorldScreen) {
+                    LOGGER.info("Closing screen");
+                    setScreen(null);
+                }
             }
         } else {
             LOGGER.info("Waiting for player to load...");
