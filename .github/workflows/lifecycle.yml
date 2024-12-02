@@ -1,0 +1,277 @@
+---
+name: Lifecycle
+
+"on":
+  push:
+    tags:
+      - '**'
+    branches:
+      - main
+  pull_request:
+    types:
+      - closed
+      - opened
+      - synchronize
+      - reopened
+  workflow_dispatch:
+    inputs:
+      dirs:
+        description: Comma-delimited directories to build and run (i.e. api,1_20,1_21 )
+        default: "all"
+      ref:
+        description: Git ref to checkout before build (i.e. my-feature-branch )
+        default: "main"
+
+concurrency:
+  group: >
+    ${{ github.workflow }}-
+    ${{ github.event_name }}
+    ${{ github.event.inputs.ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  matrices:
+    if: github.event.action != 'closed'
+    name: Construct matrices
+    runs-on: ubuntu-22.04
+    outputs:
+      build-matrix: ${{ steps.matrices.outputs.build-matrix }}
+      run-matrix: ${{ steps.matrices.outputs.run-matrix }}
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ inputs.ref || github.ref }}
+
+      - if: github.event_name != 'workflow_dispatch'
+        id: paths
+        name: Get paths
+        run: |
+          { delimiter="$(openssl rand -hex 8)"
+          echo "filter<<${delimiter}"
+          for dir in $(find . -maxdepth 2 -type d -name "1_*" -print | cut -d/ -f2-); do
+            echo "'$dir' : ['$dir/**']"
+          done; echo "${delimiter}"; } >> "${GITHUB_OUTPUT}"
+          echo "${GITHUB_OUTPUT}"
+          cat "${GITHUB_OUTPUT}" || true
+
+      - if: github.event_name != 'workflow_dispatch'
+        id: filter
+        name: Filter
+        uses: dorny/paths-filter@v3.0.2
+        with:
+          filters: |
+            ${{ steps.paths.outputs.filter }}
+
+      - id: matrices # TODO: build origin matrices dynamically
+        name: Construct matrices
+        run: |
+          import os
+          import json
+
+          build_matrix = {"include": []}
+          run_matrix = {"version": []}
+
+          build_data = [
+              {"dir": "api", "java": "8"},
+              {"dir": "1_21", "mc": "1.21.3", "lex": "53.0.7", "neo": "11-beta", "java": "21"},
+              {"dir": "1_21", "mc": "1.21.1", "lex": "52.0.2", "neo": "4", "java": "21"},
+              {"dir": "1_21", "mc": "1.21", "lex": "51.0.24", "neo": "96-beta", "java": "21"},
+              {"dir": "1_20/1_20_6", "mc": "1.20.6", "lex": "50.1.10", "neo": "119", "java": "21"},
+              {"dir": "1_20", "mc": "1.20.4", "lex": "49.0.38", "neo": "219", "java": "17"},
+              {"dir": "1_20", "mc": "1.20.3", "lex": "49.0.2", "neo": "8-beta", "java": "17"},
+              {"dir": "1_20", "mc": "1.20.2", "lex": "48.1.0", "neo": "88", "java": "17"},
+              {"dir": "1_20/1_20_1", "mc": "1.20.1", "lex": "47.2.23", "java": "17"},
+              {"dir": "1_19", "mc": "1.19.4", "lex": "45.2.9", "java": "17"},
+              {"dir": "1_19", "mc": "1.19.3", "lex": "44.1.23", "java": "17"},
+              {"dir": "1_19", "mc": "1.19.2", "lex": "43.3.9", "java": "17"},
+              {"dir": "1_19", "mc": "1.19.1", "lex": "42.0.9", "java": "17"},
+              {"dir": "1_19", "mc": "1.19", "lex": "41.1.0", "java": "17"},
+              {"dir": "1_18", "mc": "1.18.2", "lex": "40.2.18", "java": "17"},
+              {"dir": "1_17", "mc": "1.17.1", "lex": "37.1.1", "java": "16"},
+              {"dir": "1_16", "mc": "1.16.5", "lex": "36.2.42", "java": "8"},
+              {"dir": "1_12", "mc": "1.12.2", "lex": "14.23.5.2860", "java": "8"},
+              {"dir": "1_8_9", "mc": "1.8.9", "lex": "11.15.1.2318-1.8.9", "java": "8"},
+              {"dir": "1_7_10", "mc": "1.7.10", "lex": "10.13.4.1614-1.7.10", "java": "8"}
+          ]
+
+          run_data = [
+            {"mc": "1.21.3", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "21"},
+            {"mc": "1.21.3", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "21"},
+            {"mc": "1.21.3", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "21"},
+            {"mc": "1.21.1", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "21"},
+            {"mc": "1.21.1", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "21"},
+            {"mc": "1.21.1", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "21"},
+            {"mc": "1.21", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "21"},
+            {"mc": "1.21", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "21"},
+            {"mc": "1.21", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "21"},
+            {"mc": "1.20.6", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "21"},
+            {"mc": "1.20.6", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "21"},
+            {"mc": "1.20.6", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "21"},
+            {"mc": "1.20.4", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.20.4", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "17"},
+            {"mc": "1.20.4", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.20.3", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.20.3", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "17"},
+            {"mc": "1.20.3", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.20.2", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.20.2", "type": "neoforge", "modloader": "neoforge", "regex": ".*neoforge.*", "java": "17"},
+            {"mc": "1.20.2", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.20.1", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.20.1", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19.4", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19.4", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.19.3", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19.3", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.19.2", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19.2", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.19.1", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19.1", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.19", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.19", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.18.2", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "17"},
+            {"mc": "1.18.2", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "17"},
+            {"mc": "1.17.1", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "16"},
+            {"mc": "1.17.1", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "16"},
+            {"mc": "1.16.5", "type": "fabric", "modloader": "fabric", "regex": ".*fabric.*", "java": "8"},
+            {"mc": "1.16.5", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "8"},
+            {"mc": "1.12.2", "type": "lexforge", "modloader": "forge", "regex": ".*forge.*", "java": "8"},
+            {"mc": "1.8.9", "type": "lexforge", "modloader": "forge", "regex": ".*orge.*", "java": "8"},
+            {"mc": "1.7.10", "type": "lexforge", "modloader": "forge", "regex": ".*orge.*", "java": "8"}
+          ]
+
+          dirs_to_filter = []
+
+          match os.getenv('GITHUB_EVENT_NAME'):
+              case 'pull_request':
+                  if "${{ steps.filter.outcome }}" == "success":
+                      # Filter matrices based on the detected changes
+                      dirs_to_filter = json.loads('${{ steps.filter.outputs.changes }}')
+
+              case 'workflow_dispatch':
+                  input_dirs = '${{ github.event.inputs.dirs }}'
+                  print(input_dirs)
+                  if input_dirs == 'all':
+                      # If "all" is specified in the input, run all possible builds and runs
+                      build_matrix['include'], run_matrix['version'] = build_data, run_data
+                      print(build_matrix)
+                      print(run_matrix)
+                  else:
+                      # Otherwise, filter based on the directories listed in the input
+                      dirs_to_filter = [item.strip() for item in input_dirs.split(',')]
+
+              case 'push':
+                  if '${{ github.ref }}'.startswith('refs/tags/'):
+                      # If a tag is pushed, use the full matrices
+                      build_matrix['include'], run_matrix['version'] = build_data, run_data
+                  else:
+                      # Otherwise, filter directories based on the detected changes
+                      if "${{ steps.filter.outcome }}" == "success":
+                          dirs_to_filter = json.loads('${{ steps.filter.outputs.changes }}')
+
+          if dirs_to_filter:
+            build_matrix['include'].extend([item for item in build_data if item["dir"] in dirs_to_filter])
+            mc_versions = [item.get("mc") for item in build_matrix["include"] if "mc" in item]
+            run_matrix['version'].extend([item for item in run_data if item["mc"] in mc_versions])
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(json.dumps(build_matrix, indent=2))
+            fh.write(f'build-matrix={json.dumps(build_matrix)}\n')
+            print(json.dumps(run_matrix, indent=2))
+            fh.write(f'run-matrix={json.dumps(run_matrix)}\n')
+        shell: python {0}
+
+  build:
+    if: fromJSON(needs.matrices.outputs.build-matrix).include[0] != null
+    name: Build
+    needs: matrices
+    strategy:
+      fail-fast: false
+      matrix:
+        ${{ insert }}: ${{ fromJSON(needs.matrices.outputs.build-matrix) }}
+    uses: ./.github/workflows/flex-build.yml
+    with:
+      dir: ${{ matrix.dir }}
+      mc: ${{ matrix.mc }}
+      lex: ${{ matrix.lex }}
+      neo: ${{ matrix.neo }}
+      java: ${{ matrix.java }}
+
+  run:
+    name: Run tests
+    needs:
+      - matrices
+      - build
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ${{ insert }}: ${{ fromJSON(needs.matrices.outputs.run-matrix) }}
+        xvfb: [true, false]
+    steps:
+      - name: Checkout # TODO: simplify away this step, currently needed for `uses: ./`
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jars-${{ matrix.version.mc }}
+
+      - name: Bootstrap mods
+        run: |
+          mkdir -p run/mods
+          cp mc-runtime-test-*-${{ matrix.version.type }}-release.jar run/mods
+
+      - name: Setup Java temurin-${{ matrix.version.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.version.java }}
+          distribution: temurin
+
+      - name: Run game
+        timeout-minutes: 3
+        uses: ./
+        with:
+          mc: ${{ matrix.version.mc }}
+          mc-runtime-test: none
+          modloader: ${{ matrix.version.modloader }}
+          regex: ${{ matrix.version.regex }}
+          java: ${{ matrix.version.java }}
+          xvfb: ${{ matrix.xvfb }}
+          headlessmc-command: ${{ !matrix.xvfb && '-lwjgl' || '' }} --retries 3 --jvm -Djava.awt.headless=true
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: run
+    name: Release
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            jars-*/*-release.jar
+            jars-*/*-api*.jar
+
+  clean: # TODO: run this conditionally per #22
+    name: Clean up
+    needs:
+      - run
+      - release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Delete artifacts
+        uses: geekyeggo/delete-artifact@v5.1.0
+        with:
+          name: |
+            jars-*
+          failOnError: false

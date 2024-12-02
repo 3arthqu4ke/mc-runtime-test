@@ -1,0 +1,72 @@
+---
+name: Test local action
+
+"on":
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to checkout before build (i.e. my-feature-branch )
+        default: "main"
+      mc:
+        description: Minecraft version to run
+        default: "1.20.4"
+      modloader:
+        description: Modloader to install (forge, neoforge, fabric)
+        default: fabric
+      regex:
+        description: Regex to match the modloader jar
+        default: .*fabric.*
+      mc-runtime-test:
+        description: MC-Runtime-Test jar to download (none, lexforge, neoforge, fabric)
+        default: fabric
+      java:
+        description: Java version to use
+        default: "17"
+      xvfb:
+        description: Runs the game with Xvfb (true/false)
+        default: true
+      fabric-api:
+        description: Fabric API version to download (e.g. 0.97.0) or none
+        default: "0.97.0"
+      fabric-gametest-api:
+        description: Fabric GameTest API version (e.g. 1.3.5+85d85a934f) or none
+        default: "1.3.5+85d85a934f"
+      hmc-version:
+        description: HeadlessMC version
+        default: "2.4.1"
+
+env:
+  java_version: ${{ github.event.inputs.java }}
+
+jobs:
+  run:
+    name: Run test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.inputs.ref }}
+
+      - name: Setup temurin-${{ env.java_version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.java_version }}
+          distribution: temurin
+
+      - name: Run game
+        timeout-minutes: 3
+        uses: ./
+        with:
+          mc: ${{ github.event.inputs.mc }}
+          modloader: ${{ github.event.inputs.modloader }}
+          regex: ${{ github.event.inputs.regex }}
+          mc-runtime-test: ${{ github.event.inputs.mc-runtime-test }}
+          java: ${{ github.event.inputs.java }}
+          xvfb: ${{ github.event.inputs.xvfb }}
+          headlessmc-command: ${{ !inputs.xvfb && '-lwjgl' || '' }} --retries 3 --jvm -Djava.awt.headless=true
+          fabric-api: ${{ github.event.inputs.fabric-api }}
+          fabric-gametest-api: ${{ github.event.inputs.fabric-gametest-api }}
+          hmc-version: ${{ github.event.inputs.hmc-version }}
+          cache-mc: false

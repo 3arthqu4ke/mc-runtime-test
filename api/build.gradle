@@ -37,7 +37,7 @@ afterEvaluate {
                     name = 'GithubPagesMaven'
                     url = System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL')
                     credentials {
-                        username = System.getenv('GITHUB_USER')
+                        username = System.getenv('GITHUB_ACTOR')
                         password = System.getenv('GITHUB_TOKEN')
                     }
                 }
