@@ -31,7 +31,7 @@ name: Flex Build
         type: boolean
 
 jobs:
-  build:
+  build: # TODO: add build attestation and generate then combine gradle dependency graphs for SBOM
     name: Build ${{ inputs.dir }}/${{ inputs.mc }}
     runs-on: ubuntu-22.04
     steps:
@@ -60,6 +60,8 @@ jobs:
       - if: steps.cache.outputs.cache-hit != 'true'
         name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          workflow-job-context: '{}' # FIXME: avoid this cache duplication workaround
 
       - if: |
           steps.cache.outputs.cache-hit != 'true'

@@ -3,8 +3,6 @@ name: Lifecycle
 
 "on":
   push:
-    tags:
-      - '**'
     branches:
       - main
   pull_request:
@@ -22,17 +20,35 @@ name: Lifecycle
         description: Git ref to checkout before build (i.e. my-feature-branch )
         default: "main"
 
-concurrency:
+concurrency: # FIXME: prevent release commit cancellation
   group: >
     ${{ github.workflow }}-
-    ${{ github.event_name }}
+    ${{ github.event_name }}-
     ${{ github.event.inputs.ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  release-please:
+    if: github.event_name == 'push' # TODO: explicit on push to main
+    name: Release Please
+    runs-on: ubuntu-22.04
+    outputs:
+      release_created: ${{ steps.release-please.outputs.release_created }}
+      tag_name: ${{ steps.release-please.outputs.tag_name }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Run Release Please
+        id: release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   matrices:
     if: github.event.action != 'closed'
     name: Construct matrices
+    needs: release-please
     runs-on: ubuntu-22.04
     outputs:
       build-matrix: ${{ steps.matrices.outputs.build-matrix }}
@@ -64,7 +80,7 @@ jobs:
           filters: |
             ${{ steps.paths.outputs.filter }}
 
-      - id: matrices # TODO: build origin matrices dynamically
+      - id: matrices # TODO: build origin matrices dynamically, consider collapsing this into a .py
         name: Construct matrices
         run: |
           import os
@@ -162,8 +178,8 @@ jobs:
                       dirs_to_filter = [item.strip() for item in input_dirs.split(',')]
 
               case 'push':
-                  if '${{ github.ref }}'.startswith('refs/tags/'):
-                      # If a tag is pushed, use the full matrices
+                  if '${{ needs.release-please.outputs.release_created }}' == 'true':
+                      # If a release is created, use the full matrices
                       build_matrix['include'], run_matrix['version'] = build_data, run_data
                   else:
                       # Otherwise, filter directories based on the detected changes
@@ -199,6 +215,7 @@ jobs:
       java: ${{ matrix.java }}
 
   run:
+    if: github.event_name != 'push'
     name: Run tests
     needs:
       - matrices
@@ -244,8 +261,10 @@ jobs:
           headlessmc-command: ${{ !matrix.xvfb && '-lwjgl' || '' }} --retries 3 --jvm -Djava.awt.headless=true
 
   release:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: run
+    if: needs.release-please.outputs.release_created == 'true'
+    needs:
+      - release-please
+      - build
     name: Release
     permissions:
       contents: write
@@ -254,13 +273,23 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
 
-      - name: Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload release artifacts
+        uses: svenstaro/upload-release-action@v2
         with:
-          generate_release_notes: true
-          files: |
-            jars-*/*-release.jar
-            jars-*/*-api*.jar
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: jars-*/*-release.jar
+          tag: ${{ needs.release-please.outputs.tag_name }}
+          overwrite: true
+          file_glob: true
+
+      - name: Upload api artifacts
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: jars-*/*-api-*.jar # TODO: make API jar names consistent with release jars, then simplify away this step
+          tag: ${{ needs.release-please.outputs.tag_name }}
+          overwrite: true
+          file_glob: true
 
   clean: # TODO: run this conditionally per #22
     name: Clean up
