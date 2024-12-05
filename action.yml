@@ -1,6 +1,6 @@
 name: MC-Runtime-Test
 description: Runs the MC client inside your CI
-author: 3arthqu4ke
+author: HeadlessHQ
 branding:
   icon: play
   color: green
@@ -94,7 +94,7 @@ runs:
       name: Get mc-runtime-test
       uses: robinraju/release-downloader@v1.11
       with:
-        repository: 3arthqu4ke/mc-runtime-test
+        repository: headlesshq/mc-runtime-test
         tag: "3.0.0" # x-release-please-version
         fileName: 'mc-runtime-test-${{ inputs.mc }}-*-${{ inputs.mc-runtime-test }}-release.jar'
         out-file-path: run/mods

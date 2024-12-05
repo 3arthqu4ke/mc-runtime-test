@@ -4,11 +4,11 @@
 
 <div align="center">
 
-[![CodeFactor](https://www.codefactor.io/repository/github/3arthqu4ke/mc-runtime-test/badge/main)](https://www.codefactor.io/repository/github/3arthqu4ke/mc-runtime-test/overview/main)
-[![GitHub All Releases](https://img.shields.io/github/downloads/3arthqu4ke/mc-runtime-test/total.svg)](https://github.com/3arthqu4ke/mc-runtime-test/releases)
-![](https://github.com/3arthqu4ke/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
-![GitHub](https://img.shields.io/github/license/3arthqu4ke/mc-runtime-test)
-![Github last-commit](https://img.shields.io/github/last-commit/3arthqu4ke/mc-runtime-test)
+[![CodeFactor](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/badge/main)](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/overview/main)
+[![GitHub All Releases](https://img.shields.io/github/downloads/headlesshq/mc-runtime-test/total.svg)](https://github.com/headlesshq/mc-runtime-test/releases)
+![](https://github.com/headlesshq/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
+![GitHub](https://img.shields.io/github/license/headlesshq/mc-runtime-test)
+![Github last-commit](https://img.shields.io/github/last-commit/headlesshq/mc-runtime-test)
 
 </div>
 
@@ -77,7 +77,7 @@ jobs:
         run: mkdir -p run/mods && cp build/libs/<your-mod>.jar run/mods
       # Call this Action to run the client
       - name: Run the MC client
-        uses: 3arthqu4ke/mc-runtime-test@3.0.0
+        uses: headlesshq/mc-runtime-test@3.0.0
         with:
           mc: 3.0.0
           modloader: fabric
