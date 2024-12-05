@@ -29,7 +29,6 @@ concurrency: # FIXME: prevent release commit cancellation
 
 jobs:
   release-please:
-    if: github.event_name == 'push' # TODO: explicit on push to main
     name: Release Please
     runs-on: ubuntu-22.04
     outputs:
@@ -39,8 +38,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Run Release Please
+      - if: github.event_name == 'push' # TODO: explicit on push to main
         id: release-please
+        name: Run Release Please
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
