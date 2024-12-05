@@ -90,26 +90,26 @@ jobs:
           run_matrix = {"version": []}
 
           build_data = [
-              {"dir": "api", "java": "8"},
-              {"dir": "1_21", "mc": "1.21.3", "lex": "53.0.7", "neo": "11-beta", "java": "21"},
-              {"dir": "1_21", "mc": "1.21.1", "lex": "52.0.2", "neo": "4", "java": "21"},
-              {"dir": "1_21", "mc": "1.21", "lex": "51.0.24", "neo": "96-beta", "java": "21"},
-              {"dir": "1_20/1_20_6", "mc": "1.20.6", "lex": "50.1.10", "neo": "119", "java": "21"},
-              {"dir": "1_20", "mc": "1.20.4", "lex": "49.0.38", "neo": "219", "java": "17"},
-              {"dir": "1_20", "mc": "1.20.3", "lex": "49.0.2", "neo": "8-beta", "java": "17"},
-              {"dir": "1_20", "mc": "1.20.2", "lex": "48.1.0", "neo": "88", "java": "17"},
-              {"dir": "1_20/1_20_1", "mc": "1.20.1", "lex": "47.2.23", "java": "17"},
-              {"dir": "1_19", "mc": "1.19.4", "lex": "45.2.9", "java": "17"},
-              {"dir": "1_19", "mc": "1.19.3", "lex": "44.1.23", "java": "17"},
-              {"dir": "1_19", "mc": "1.19.2", "lex": "43.3.9", "java": "17"},
-              {"dir": "1_19", "mc": "1.19.1", "lex": "42.0.9", "java": "17"},
-              {"dir": "1_19", "mc": "1.19", "lex": "41.1.0", "java": "17"},
-              {"dir": "1_18", "mc": "1.18.2", "lex": "40.2.18", "java": "17"},
-              {"dir": "1_17", "mc": "1.17.1", "lex": "37.1.1", "java": "16"},
-              {"dir": "1_16", "mc": "1.16.5", "lex": "36.2.42", "java": "8"},
-              {"dir": "1_12", "mc": "1.12.2", "lex": "14.23.5.2860", "java": "8"},
-              {"dir": "1_8_9", "mc": "1.8.9", "lex": "11.15.1.2318-1.8.9", "java": "8"},
-              {"dir": "1_7_10", "mc": "1.7.10", "lex": "10.13.4.1614-1.7.10", "java": "8"}
+            {"dir": "api", "java": "8"},
+            {"dir": "1_21", "mc": "1.21.3", "lex": "53.0.7", "neo": "11-beta", "java": "21"},
+            {"dir": "1_21", "mc": "1.21.1", "lex": "52.0.2", "neo": "4", "java": "21"},
+            {"dir": "1_21", "mc": "1.21", "lex": "51.0.24", "neo": "96-beta", "java": "21"},
+            {"dir": "1_20/1_20_6", "mc": "1.20.6", "lex": "50.1.10", "neo": "119", "java": "21"},
+            {"dir": "1_20", "mc": "1.20.4", "lex": "49.0.38", "neo": "219", "java": "17"},
+            {"dir": "1_20", "mc": "1.20.3", "lex": "49.0.2", "neo": "8-beta", "java": "17"},
+            {"dir": "1_20", "mc": "1.20.2", "lex": "48.1.0", "neo": "88", "java": "17"},
+            {"dir": "1_20/1_20_1", "mc": "1.20.1", "lex": "47.2.23", "java": "17"},
+            {"dir": "1_19", "mc": "1.19.4", "lex": "45.2.9", "java": "17"},
+            {"dir": "1_19", "mc": "1.19.3", "lex": "44.1.23", "java": "17"},
+            {"dir": "1_19", "mc": "1.19.2", "lex": "43.3.9", "java": "17"},
+            {"dir": "1_19", "mc": "1.19.1", "lex": "42.0.9", "java": "17"},
+            {"dir": "1_19", "mc": "1.19", "lex": "41.1.0", "java": "17"},
+            {"dir": "1_18", "mc": "1.18.2", "lex": "40.2.18", "java": "17"},
+            {"dir": "1_17", "mc": "1.17.1", "lex": "37.1.1", "java": "16"},
+            {"dir": "1_16", "mc": "1.16.5", "lex": "36.2.42", "java": "8"},
+            {"dir": "1_12", "mc": "1.12.2", "lex": "14.23.5.2860", "java": "8"},
+            {"dir": "1_8_9", "mc": "1.8.9", "lex": "11.15.1.2318-1.8.9", "java": "8"},
+            {"dir": "1_7_10", "mc": "1.7.10", "lex": "10.13.4.1614-1.7.10", "java": "8"}
           ]
 
           run_data = [
@@ -160,31 +160,27 @@ jobs:
           dirs_to_filter = []
 
           match os.getenv('GITHUB_EVENT_NAME'):
-              case 'pull_request':
-                  if "${{ steps.filter.outcome }}" == "success":
-                      # Filter matrices based on the detected changes
-                      dirs_to_filter = json.loads('${{ steps.filter.outputs.changes }}')
+            case 'pull_request':
+              if "${{ steps.filter.outcome }}" == "success":
+                # Filter matrices based on the detected changes
+                dirs_to_filter = json.loads('${{ steps.filter.outputs.changes }}')
 
-              case 'workflow_dispatch':
-                  input_dirs = '${{ github.event.inputs.dirs }}'
-                  print(input_dirs)
-                  if input_dirs == 'all':
-                      # If "all" is specified in the input, run all possible builds and runs
-                      build_matrix['include'], run_matrix['version'] = build_data, run_data
-                      print(build_matrix)
-                      print(run_matrix)
-                  else:
-                      # Otherwise, filter based on the directories listed in the input
-                      dirs_to_filter = [item.strip() for item in input_dirs.split(',')]
+            case 'workflow_dispatch':
+              input_dirs = '${{ github.event.inputs.dirs }}'
+              print(input_dirs)
+              if input_dirs == 'all':
+                # If "all" is specified in the input, run all possible builds and runs
+                build_matrix['include'], run_matrix['version'] = build_data, run_data
+                print(build_matrix)
+                print(run_matrix)
+              else:
+                # Otherwise, filter based on the directories listed in the input
+                dirs_to_filter = [item.strip() for item in input_dirs.split(',')]
 
-              case 'push':
-                  if '${{ needs.release-please.outputs.release_created }}' == 'true':
-                      # If a release is created, use the full matrices
-                      build_matrix['include'], run_matrix['version'] = build_data, run_data
-                  else:
-                      # Otherwise, filter directories based on the detected changes
-                      if "${{ steps.filter.outcome }}" == "success":
-                          dirs_to_filter = json.loads('${{ steps.filter.outputs.changes }}')
+            case 'push':
+              if '${{ needs.release-please.outputs.release_created }}' == 'true':
+                # If a release is created, use the full matrices
+                build_matrix['include'], run_matrix['version'] = build_data, run_data
 
           if dirs_to_filter:
             build_matrix['include'].extend([item for item in build_data if item["dir"] in dirs_to_filter])
