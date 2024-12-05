@@ -243,7 +243,7 @@ jobs:
           cp mc-runtime-test-*-${{ matrix.version.type }}-release.jar run/mods
 
       - name: Setup Java temurin-${{ matrix.version.java }}
-        uses: actions/setup-java@v4
+        uses: useblacksmith/setup-java@v5
         with:
           java-version: ${{ matrix.version.java }}
           distribution: temurin
