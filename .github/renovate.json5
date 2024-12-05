@@ -1,0 +1,22 @@
+{
+  "extends": [
+    ":enableRenovate",
+    ":semanticCommits",
+    ":enablePreCommit",
+    ":pinDependencies"
+  ],
+  "platform": "github",
+  "onboarding": false,
+  "requireConfig": "optional",
+  "timezone": "UTC",
+  "dependencyDashboard": true,
+  "platformCommit": true,
+  "prCreation": "not-pending",
+  "suppressNotifications": ["prIgnoreNotification"],
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {"matchUpdateTypes": ["major"], "addLabels": ["dependency/major"]},
+    {"matchUpdateTypes": ["minor"], "addLabels": ["dependency/minor"]},
+    {"matchUpdateTypes": ["patch"], "addLabels": ["dependency/patch"]}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "42445f09578667ad2a3b620ca669ba1c13c1c1ac",
+  "packages": {
+    ".": {
+      "include-component-in-tag": false,
+      "include-v-in-tag": false,
+      "package-name": "mc-runtime-test",
+      "release-type": "simple",
+      "extra-files": [
+        "action.yml",
+        "api/gradle.properties",
+        "README.md"
+      ]
+    }
+  }
+}
