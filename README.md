@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Java
-        uses: actions/setup-java@v4
+        uses: useblacksmith/setup-java@v5
         with:
           java-version: ${{ env.java_version }}
           distribution: "temurin"
