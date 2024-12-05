@@ -95,7 +95,7 @@ runs:
       uses: robinraju/release-downloader@v1.11
       with:
         repository: 3arthqu4ke/mc-runtime-test
-        tag: "2.4.2" # x-release-please-version
+        tag: "3.0.0" # x-release-please-version
         fileName: 'mc-runtime-test-${{ inputs.mc }}-*-${{ inputs.mc-runtime-test }}-release.jar'
         out-file-path: run/mods
 
