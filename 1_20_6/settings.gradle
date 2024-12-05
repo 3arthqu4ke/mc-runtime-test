@@ -2,6 +2,9 @@ pluginManagement {
     repositories {
         mavenCentral()
         maven {
+            url = "https://maven.neoforged.net/releases"
+        }
+        maven {
             url = "https://maven.minecraftforge.net/"
         }
         maven {
@@ -25,6 +28,6 @@ pluginManagement {
 }
 
 include 'api'
-project(':api').projectDir = file('../../api')
+project(':api').projectDir = file('../api')
 
 rootProject.name = 'mc-runtime-test'
