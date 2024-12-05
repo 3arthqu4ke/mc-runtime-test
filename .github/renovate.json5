@@ -3,7 +3,7 @@
     ":enableRenovate",
     ":semanticCommits",
     ":enablePreCommit",
-    ":pinDependencies"
+    "config:best-practices"
   ],
   "platform": "github",
   "onboarding": false,
