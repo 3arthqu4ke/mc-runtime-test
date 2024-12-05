@@ -33,7 +33,7 @@ name: Flex Build
 jobs:
   build: # TODO: add build attestation and generate then combine gradle dependency graphs for SBOM
     name: Build ${{ inputs.dir }}/${{ inputs.mc }}
-    runs-on: blacksmith-4vcpu-ubuntu-2204
+    runs-on: blacksmith-2vcpu-ubuntu-2204
     steps:
       - name: Checkout
         uses: actions/checkout@v4
