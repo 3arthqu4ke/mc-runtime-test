@@ -22,7 +22,7 @@ jobs: # TODO: add cleanup job
 
   merge: # TODO: simplify away this job
     name: Merge
-    needs: [build]
+    needs: build
     runs-on: blacksmith-2vcpu-ubuntu-2204
     steps:
       - name: Merge artifacts
@@ -32,7 +32,7 @@ jobs: # TODO: add cleanup job
 
   run:
     name: Run tests
-    needs: [merge]
+    needs: merge
     strategy:
       matrix:
         include:
