@@ -4,6 +4,7 @@ name: Test local action
 "on":
   workflow_dispatch:
     inputs:
+      # checkov:skip=CKV_GHA_7:The is a test workflow
       ref:
         description: Git ref to checkout before build (i.e. my-feature-branch )
         default: "main"

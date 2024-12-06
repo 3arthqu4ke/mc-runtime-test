@@ -63,7 +63,7 @@ jobs:
 
       - if: |
           steps.cache.outputs.cache-hit != 'true'
-          && !inputs.release
+          && !inputs.publish
         name: Gradle build
         run: >
           ./gradlew build --stacktrace
@@ -72,7 +72,7 @@ jobs:
           -Pneoforge_version=${{ inputs.neo }}
         working-directory: ${{ inputs.dir }}
 
-      - if: inputs.release
+      - if: inputs.publish
         name: Gradle publish
         env:
           IS_MAVEN_PUB: true
