@@ -109,7 +109,7 @@ at once can be found
 
 # Running your own tests
 MC-Runtime-Test does not provide a framework for full integration tests.
-You can, however, use Minecrafts own [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework).
+You can, however, use Minecraft's own [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework).
 MC-Runtime-Test will basically execute the `/test runall` command after joining the world.
 On Neoforge/Lexforge gametest discovery does really not work in production, you might need to register
 them themselves and use other [hacks](gametest/src/main/java/me/earth/clientgametest/mixin/MixinGameTestRegistry.java)
