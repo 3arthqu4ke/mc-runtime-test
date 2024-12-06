@@ -1,0 +1,9 @@
+---
+self-hosted-runner:
+  labels:
+    - blacksmith-2vcpu-ubuntu-2204
+
+paths:
+  .github/workflows/lifecycle.yml:
+    ignore:
+      - '.+ is not defined in object type .+'

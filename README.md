@@ -6,7 +6,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/badge/main)](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/overview/main)
 [![GitHub All Releases](https://img.shields.io/github/downloads/headlesshq/mc-runtime-test/total.svg)](https://github.com/headlesshq/mc-runtime-test/releases)
-![](https://github.com/headlesshq/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
+![Lifecycle](https://github.com/headlesshq/mc-runtime-test/actions/workflows/lifecycle.yml/badge.svg)
 ![GitHub](https://img.shields.io/github/license/headlesshq/mc-runtime-test)
 ![Github last-commit](https://img.shields.io/github/last-commit/headlesshq/mc-runtime-test)
 
@@ -86,12 +86,11 @@ jobs:
           java: ${{ env.java_version }}
 ```
 <!-- x-release-please-end -->
-An example workflow in action can be found
-[here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
+
 An example for a large matrix workflow
 which tests 20 different versions of Minecraft
 at once can be found 
-[here](https://github.com/3arthqu4ke/hmc-specifics/blob/main/.github/workflows/run-matrix.yml).
+[here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1592865073edf99c76184d7832f0f498c1299c7a/.github/workflows/run-matrix.yml).
 
 # Inputs
 - `mc`: The MC version to use, e.g. `1.20.4`.

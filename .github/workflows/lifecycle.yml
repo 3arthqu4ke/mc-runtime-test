@@ -13,6 +13,7 @@ name: Lifecycle
       - reopened
   workflow_dispatch:
     inputs:
+      # checkov:skip=CKV_GHA_7:These inputs are used to construct the build matrix
       dirs:
         description: Comma-delimited directories to build and run (i.e. api,1_20,1_21 )
         default: "all"
@@ -29,6 +30,7 @@ concurrency: # FIXME: prevent release commit cancellation
 
 jobs:
   release-please:
+    if: github.event.action != 'closed'
     name: Release Please
     runs-on: blacksmith-2vcpu-ubuntu-2204
     outputs:
@@ -45,9 +47,109 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  lint:
+    name: Linters
+    runs-on: blacksmith-2vcpu-ubuntu-2204
+    # if: |
+    #   github.event.action != 'closed'
+    #   && !contains(github.actor, 'darcusk')
+    env:
+      APPLY_FIXES: all
+      APPLY_FIXES_EVENT: all
+      APPLY_FIXES_MODE: commit
+    outputs:
+      changes_detected: ${{ steps.autocommit.outputs.changes_detected }}
+      commit_hash: ${{ steps.autocommit.outputs.commit_hash }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.head_ref }}
+
+      - name: Paths filter
+        uses: dorny/paths-filter@v3.0.2
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            addedOrModified:
+              - added|modified: '**'
+
+      - name: Setup Python
+        uses: useblacksmith/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Cache pre-commit
+        uses: useblacksmith/cache@v5
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Install pre-commit
+        shell: bash
+        run: |
+          python -m pip install pre-commit==4.0.1
+          python -m pip freeze --local
+
+      - name: Run pre-commit
+        id: precommit
+        shell: bash
+        run: |
+          # Run against changes if addedOrModified is true, else run against all files
+          if [[ "${{ steps.filter.outputs.addedOrModified }}" == "true" ]]; then
+            pre-commit run --show-diff-on-failure --color=always --files "${{ steps.filter.outputs.addedOrModified_files }}" || RETRY="changes"
+          else
+            pre-commit run --show-diff-on-failure --color=always --all-files || RETRY="allfiles"
+          fi
+
+          # Retry logic
+          if [[ "$RETRY" == "changes" ]]; then
+            pre-commit run --show-diff-on-failure --color=always --files "${{ steps.filter.outputs.addedOrModified_files }}"
+          elif [[ "$RETRY" == "allfiles" ]]; then
+            pre-commit run --show-diff-on-failure --color=always --all-files
+          fi
+
+      - name: Run Mega-Linter
+        if: ${{ !cancelled() }}
+        uses: oxsecurity/megalinter/flavors/java@v8.3.0
+
+      - name: Archive production artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mega-Linter reports
+          path: |
+            megalinter-reports
+            mega-linter.log
+
+      - name: Add reports directory to gitignore
+        if: ${{ !cancelled() }}
+        run: |
+          touch .gitignore; grep -qxF 'megalinter-reports/' .gitignore ||
+          echo 'megalinter-reports/' >> .gitignore
+          wget https://raw.githubusercontent.com/packwiz/packwiz/refs/heads/main/go.sum
+
+      - name: Prepare commit
+        if: ${{ !cancelled() }}
+        run: sudo chown -Rc $UID .git/
+
+      - name: Commit and push applied linter fixes
+        id: autocommit
+        if: ${{ !cancelled() }}
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          branch: ${{ github.head_ref }}
+          commit_message: "chore: apply linter fixes"
+
   matrices:
-    if: github.event.action != 'closed'
     name: Construct matrices
+    if: github.job == 'notajob'
     needs: release-please
     runs-on: blacksmith-2vcpu-ubuntu-2204
     outputs:

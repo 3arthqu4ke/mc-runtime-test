@@ -1,7 +1,7 @@
 ---
 name: Run gametests
 
-"on":
+on:
   workflow_dispatch: # TODO: add relevant inputs
 
 jobs: # TODO: add cleanup job
@@ -10,8 +10,16 @@ jobs: # TODO: add cleanup job
     strategy:
       matrix:
         include:
-          - { dir: gametest, mc: 1.20.4, lex: 49.0.38, neo: 219, java: 17 }
-          - { dir: 1_20, mc: 1.20.4, lex: 49.0.38, neo: 219, java: 17 }
+          - dir: gametest
+            mc: 1.20.4
+            lex: 49.0.38
+            neo: 219
+            java: 17
+          - dir: 1_20
+            mc: 1.20.4
+            lex: 49.0.38
+            neo: 219
+            java: 17
     uses: ./.github/workflows/flex-build.yml
     with:
       dir: ${{ matrix.dir }}
@@ -22,7 +30,7 @@ jobs: # TODO: add cleanup job
 
   merge: # TODO: simplify away this job
     name: Merge
-    needs: [build]
+    needs: build
     runs-on: blacksmith-2vcpu-ubuntu-2204
     steps:
       - name: Merge artifacts
@@ -32,13 +40,25 @@ jobs: # TODO: add cleanup job
 
   run:
     name: Run tests
-    needs: [merge]
+    needs: merge
     strategy:
       matrix:
         include:
-          - { mc: 1.20.4, type: lexforge, modloader: forge, regex: .*forge.*, java: 17 }
-          - { mc: 1.20.4, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 17 }
-          - { mc: 1.20.4, type: fabric, modloader: fabric, regex: .*fabric.*, java: 17 }
+          - mc: 1.20.4
+            type: lexforge
+            modloader: forge
+            regex: .*forge.*
+            java: 17
+          - mc: 1.20.4
+            type: neoforge
+            modloader: neoforge
+            regex: .*neoforge.*
+            java: 17
+          - mc: 1.20.4
+            type: fabric
+            modloader: fabric
+            regex: .*fabric.*
+            java: 17
     runs-on: blacksmith-2vcpu-ubuntu-2204
     steps:
       - name: Download artifacts
