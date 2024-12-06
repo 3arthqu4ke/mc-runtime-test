@@ -5,9 +5,12 @@
     ":enablePreCommit",
     "config:best-practices"
   ],
-  "platform": "github",
-  "onboarding": false,
-  "requireConfig": "optional",
+  "gradle": { // FIXME: renovate runs gradle builds, leading to timeout
+    "enabled": false
+  }
+  "platform": "github", // global
+  "onboarding": false, // global
+  "requireConfig": "optional", // global
   "timezone": "UTC",
   "dependencyDashboard": true,
   "platformCommit": true,
