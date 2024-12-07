@@ -52,7 +52,6 @@ You can configure it to use any other version, but in that case you need to set 
 </div>
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
-<!-- x-release-please-start-version -->
 # Example
 ```yml
 name: Run the MC client
@@ -67,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Java
-        uses: useblacksmith/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ env.java_version }}
           distribution: "temurin"
@@ -79,13 +78,12 @@ jobs:
       - name: Run the MC client
         uses: headlesshq/mc-runtime-test@3.0.0
         with:
-          mc: 3.0.0
+          mc: 1.21.4
           modloader: fabric
           regex: .*fabric.*
           mc-runtime-test: fabric
           java: ${{ env.java_version }}
 ```
-<!-- x-release-please-end -->
 An example workflow in action can be found
 [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
 An example for a large matrix workflow
@@ -109,7 +107,7 @@ at once can be found
 
 # Running your own tests
 MC-Runtime-Test does not provide a framework for full integration tests.
-You can, however, use Minecrafts own [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework).
+You can, however, use Minecraft's own [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework).
 MC-Runtime-Test will basically execute the `/test runall` command after joining the world.
 On Neoforge/Lexforge gametest discovery does really not work in production, you might need to register
 them themselves and use other [hacks](gametest/src/main/java/me/earth/clientgametest/mixin/MixinGameTestRegistry.java)
