@@ -52,7 +52,6 @@ You can configure it to use any other version, but in that case you need to set 
 </div>
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
-<!-- x-release-please-start-version -->
 # Example
 ```yml
 name: Run the MC client
@@ -67,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Java
-        uses: useblacksmith/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ env.java_version }}
           distribution: "temurin"
@@ -85,7 +84,6 @@ jobs:
           mc-runtime-test: fabric
           java: ${{ env.java_version }}
 ```
-<!-- x-release-please-end -->
 An example workflow in action can be found
 [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
 An example for a large matrix workflow
