@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Java
-        uses: useblacksmith/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ env.java_version }}
           distribution: "temurin"
@@ -79,7 +79,7 @@ jobs:
       - name: Run the MC client
         uses: headlesshq/mc-runtime-test@3.0.0
         with:
-          mc: 3.0.0
+          mc: 1.21.4
           modloader: fabric
           regex: .*fabric.*
           mc-runtime-test: fabric

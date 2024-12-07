@@ -76,7 +76,7 @@ runs:
 
     - if: inputs.cache-mc == 'true'
       name: Cache Minecraft
-      uses: useblacksmith/cache@v5
+      uses: actions/cache@v4
       with:
         path: /home/runner/.minecraft
         key: hmc-${{ inputs.modloader }}-${{ inputs.mc }}

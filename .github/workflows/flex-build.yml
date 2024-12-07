@@ -33,7 +33,7 @@ name: Flex Build
 jobs:
   build: # TODO: add build attestation and generate then combine gradle dependency graphs for SBOM
     name: Build ${{ inputs.dir }}/${{ inputs.mc }}
-    runs-on: blacksmith-2vcpu-ubuntu-2204
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,21 +45,21 @@ jobs:
 
       - name: Cache build
         id: cache
-        uses: useblacksmith/cache@v5
+        uses: actions/cache@v4
         with:
           path: ${{ inputs.dir }}/build
           key: build-${{ hashFiles(format('{0}/[a-z]**', inputs.dir), 'api/**') }}
 
       - if: steps.cache.outputs.cache-hit != 'true'
         name: Setup Java
-        uses: useblacksmith/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: ${{ inputs.java }}
 
       - if: steps.cache.outputs.cache-hit != 'true'
         name: Setup Gradle
-        uses: useblacksmith/setup-gradle/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v4
         with:
           workflow-job-context: '{}' # FIXME: avoid this cache duplication workaround
 
