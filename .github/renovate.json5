@@ -1,22 +1,45 @@
 {
-  "extends": [
-    ":enableRenovate",
-    ":semanticCommits",
-    ":enablePreCommit",
-    "config:best-practices"
+  extends: [
+    ':enableRenovate',
+    ':semanticCommits',
+    ':enablePreCommit',
+    'config:best-practices',
   ],
-  "platform": "github",
-  "onboarding": false,
-  "requireConfig": "optional",
-  "timezone": "UTC",
-  "dependencyDashboard": true,
-  "platformCommit": true,
-  "prCreation": "not-pending",
-  "suppressNotifications": ["prIgnoreNotification"],
-  "rebaseWhen": "conflicted",
-  "packageRules": [
-    {"matchUpdateTypes": ["major"], "addLabels": ["dependency/major"]},
-    {"matchUpdateTypes": ["minor"], "addLabels": ["dependency/minor"]},
-    {"matchUpdateTypes": ["patch"], "addLabels": ["dependency/patch"]}
-  ]
+  platform: 'github',
+  onboarding: false,
+  requireConfig: 'optional',
+  timezone: 'UTC',
+  dependencyDashboard: true,
+  platformCommit: 'enabled',
+  prCreation: 'not-pending',
+  suppressNotifications: [
+    'prIgnoreNotification',
+  ],
+  rebaseWhen: 'conflicted',
+  packageRules: [
+    {
+      matchUpdateTypes: [
+        'major',
+      ],
+      addLabels: [
+        'dependency/major',
+      ],
+    },
+    {
+      matchUpdateTypes: [
+        'minor',
+      ],
+      addLabels: [
+        'dependency/minor',
+      ],
+    },
+    {
+      matchUpdateTypes: [
+        'patch',
+      ],
+      addLabels: [
+        'dependency/patch',
+      ],
+    },
+  ],
 }
