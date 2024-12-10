@@ -1,60 +1,62 @@
 <h1 align="center" style="font-weight: normal;"><b>MC-Runtime-Test</b></h1>
 <p align="center">Run the Minecraft client inside your CI/CD pipeline.</p>
-<p align="center">MC-Runtime-Test | <a href="https://github.com/3arthqu4ke/headlessmc">HMC</a> | <a href="https://github.com/3arthqu4ke/hmc-specifics">HMC-Specifics</a> | <a href="https://github.com/3arthqu4ke/hmc-optimizations">HMC-Optimizations</a></p>
+<p align="center">
+MC-Runtime-Test | <a href="https://github.com/3arthqu4ke/headlessmc">HMC</a> | <a href="https://github.com/3arthqu4ke/hmc-specifics">HMC-Specifics</a> | <a href="https://github.com/3arthqu4ke/hmc-optimizations">HMC-Optimizations</a>
+</p>
 
 <div align="center">
 
 [![CodeFactor](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/badge/main)](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/overview/main)
 [![GitHub All Releases](https://img.shields.io/github/downloads/headlesshq/mc-runtime-test/total.svg)](https://github.com/headlesshq/mc-runtime-test/releases)
-![](https://github.com/headlesshq/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
-![GitHub](https://img.shields.io/github/license/headlesshq/mc-runtime-test)
-![Github last-commit](https://img.shields.io/github/last-commit/headlesshq/mc-runtime-test)
+![GitHub Workflow Status](https://github.com/headlesshq/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
+![GitHub License](https://img.shields.io/github/license/headlesshq/mc-runtime-test)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/headlesshq/mc-runtime-test)
 
 </div>
 
-> [!WARNING]
-> NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
+> [!NOTE]  
+> This is **not an official Minecraft product**. It is **not approved by or associated with Mojang or Microsoft**.
 
-This action runs the Minecraft client inside your CI/CD pipeline.
+---
 
-When coding Minecraft mods many bugs can only be caught at runtime.
-Between many different versions and modloaders manual testing becomes laborious.
-Additionally, many (e.g. mapping or mixin related) bugs only occur when running against a Minecraft instance that has been launched by a launcher, instead of some IDE or gradle task.
+MC-Runtime-Test enables you to run the Minecraft client within your CI/CD pipelines, simplifying the testing of runtime bugs in Minecraft mods.
+Manual testing for different Minecraft versions and modloaders can be time-consuming, especially when bugs occur only in runtime environments launched via a Minecraft launcher.
+This project helps streamline that process by automating the client launch and basic test execution.
 
-This action runs the Minecraft client using the [HeadlessMC](https://github.com/3arthqu4ke/headlessmc) launcher.
-It uses Xvfb as a virtual framebuffer that allows us to run the game headlessly.
-HeadlessMC can also be used to patch the lwjgl library.
+## Features
+- Utilizes [HeadlessMC](https://github.com/3arthqu4ke/headlessmc) for headless Minecraft launches.
+- Employs Xvfb for virtual framebuffer support.
+- Includes a lightweight mod that:
+  - Join a single-player world.
+  - Wait for chunks to load.
+  - Quit the game after a few seconds.
+- Supports Minecraft’s [GameTest Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework) to run registered tests for newer versions.
 
-This project also provides mods for several versions, which all do one thing: join a single-player world, wait for chunks to load,
-and then quit the game after a few seconds.
-This way you can already run simple boot tests, checking whether the game will boot with your mod.
-Mods for newer versions also execute all [gametests](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework)
-registered.
+### Supported Minecraft Versions and Modloaders
+| Version         | Forge           | Fabric          | NeoForge        |
+|-----------------|----------------|----------------|----------------|
+| 1.21 - 1.21.3   | ✔️              | ✔️              | ✔️              |
+| 1.20.2 - 1.20.6 | ✔️              | ✔️              | ✔️              |
+| 1.20.1          | ✔️              | ✔️              | ⚠️              |
+| 1.19 - 1.19.4   | ✔️              | ✔️              | —              |
+| 1.18.2          | ✔️              | ✔️              | —              |
+| 1.17.1          | ✔️              | ✔️              | —              |
+| 1.16.5          | ✔️              | ✔️              | —              |
+| 1.12.2          | ✔️              | ⚠️              | —              |
+| 1.8.9           | ✔️              | ⚠️              | —              |
+| 1.7.10          | ✔️              | ⚠️              | —              |
 
-MC-Runtime-Test currently supports the following Minecraft versions and modloaders:
-You can configure it to use any other version, but in that case you need to set `mc-runtime-test` to `none` and provide another way for the game to exit, or the workflow will run indefinitely.
+*⚠️ Versions marked with a warning symbol have limited or untested support.*
 
-<div align="center">
-  
-| Version  | Forge | Fabric | NeoForge | 
-| :-: | :-: | :-: | :-: |
-| 1.21 - 1.21.3  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
-| 1.20.2 - 1.20.6  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
-| 1.20.1  | :white_check_mark:  | :white_check_mark:  | :warning:  |
-| 1.19 - 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
-| 1.18.2  | :white_check_mark:  | :white_check_mark:  | - |
-| 1.17.1  | :white_check_mark:  | :white_check_mark:  | - |
-| 1.16.5  | :white_check_mark:  | :white_check_mark:  | - |
-| 1.12.2  | :white_check_mark:  | :warning:  | - |
-| 1.8.9  | :white_check_mark:  | :warning:  | - |
-| 1.7.10  | :white_check_mark:  | :warning:  | - |
+---
 
-</div>
+## Quickstart Example
+Below is a basic workflow example to run the Minecraft client using MC-Runtime-Test.
 
-Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
-# Example
 <pre lang="yml">
-name: Run the MC client
+---
+name: Run Minecraft Client
+
 on:
   workflow_dispatch:
 
@@ -70,12 +72,16 @@ jobs:
         with:
           java-version: ${{ env.java_version }}
           distribution: "temurin"
-      # ... run actions to build your mod
-      # Copy the jar that you build to the mods folder
-      - name: Copy mod jar to mods
-        run: mkdir -p run/mods && cp build/libs/<your-mod>.jar run/mods
-      # Call this Action to run the client
-      - name: Run the MC client
+
+      - name: [Example] Build mod
+        run: ./gradlew build
+
+      - name: [Example] Stage mod for test client
+        run: |
+          mkdir -p run/mods
+          cp build/libs/<your-mod>.jar run/mods
+
+      - name: Run MC test client
         uses: headlesshq/mc-runtime-test@3.0.0 <!-- x-release-please-version -->
         with:
           mc: 1.21.4
@@ -85,37 +91,48 @@ jobs:
           java: ${{ env.java_version }}
 </pre>
 
-An example workflow in action can be found
-[here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
-An example for a large matrix workflow
-which tests 20 different versions of Minecraft
-at once can be found 
-[here](https://github.com/3arthqu4ke/hmc-specifics/blob/main/.github/workflows/run-matrix.yml).
+More examples:
+- [Fabric Workflow Example](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml)
+- [Matrix Workflow Testing Multiple Versions](https://github.com/3arthqu4ke/hmc-specifics/blob/main/.github/workflows/run-matrix.yml)
 
-# Inputs
-- `mc`: The MC version to use, e.g. `1.20.4`.
-- `modloader`: The modloader to install with HeadlessMC (`forge`, `neoforge` or `fabric`).
-- `regex`: A Regex to match the MC version to launch (can in most cases just be `.*<modloader>.*`, like `.*fabric.*`, very old versions of forge might start with an uppercase `Forge`).
-- `java`: The Java version to use, e.g. `17`.
-- `dummy-assets`: HeadlessMC will use dummy assets to not download all the MC assets. Can be disabled by setting this to `false`.
-- `mc-runtime-test`: The MC-Runtime-Test jar to download (`none`, `lexforge`, `fabric` or `neoforge`). When using `none` you need to provide a way for the game to exit or the action will run indefinitely and time out.
-- `xvfb`: If `true` (default), runs the game with Xvfb, if false, you should probably use the -lwjgl option in headlessmc.
-- `headlessmc-command`: Allows you to customize the arguments of the headlessmc command.
-- `fabric-api`: Downloads the fabric-api. (Default is none, an example value would be 0.97.0, to download 0.97.0+\<mc\>)
-- `fabric-gametest-api`: Downloads the fabric-gametest-api to run gametests. (Default is none, an example value would be 1.3.5+85d85a934f).
-- `download-hmc`: Whether to download headlessmc or not, if not you need to supply a headlessmc-launcher.jar. Default is `true`.
-- `hmc-version`: The [headlessmc version](https://github.com/3arthqu4ke/headlessmc/releases) to download.
+---
 
-# Running your own tests
-MC-Runtime-Test does not provide a framework for full integration tests.
-You can, however, use Minecraft's own [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework).
-MC-Runtime-Test will basically execute the `/test runall` command after joining the world.
-On Neoforge/Lexforge gametest discovery does really not work in production, you might need to register
-them themselves and use other [hacks](gametest/src/main/java/me/earth/clientgametest/mixin/MixinGameTestRegistry.java)
-to get the structure templates correctly, but we are working on it.
-You can also use the `headlessmc-command` input to specify additional SystemProperties with the `--jvm` flag.
-E.g. `-DMcRuntimeGameTestMinExpectedGameTests=<int>` to specify how many gametests you expect to be executed
-at minimum and otherwise fail if not enough gametests have been found.
+## Inputs
+The following table summarizes the available inputs for customization:
 
-# Credits
-[unimined](https://github.com/unimined/unimined) by [wagyourtail](https://github.com/wagyourtail), a gradle plugin allowing us to support multiple modloaders, has greatly accelerated the development of mc-runtime-test
+| Input                 | Description                            | Required | Example                                  |
+|-----------------------|----------------------------------------|----------|------------------------------------------|
+| `mc`                  | Minecraft version to run               | Yes      | `1.20.4`                                 |
+| `modloader`           | Modloader to install                   | Yes      | `forge`, `neoforge`, `fabric`            |
+| `regex`               | Regex to match the modloader jar       | Yes      | `.*fabric.*`                             |
+| `java`                | Java version to use                    | Yes      | `8`, `16`, `17`, `21`                    |
+| `mc-runtime-test`     | MC-Runtime-Test jar to download        | Yes      | `none`, `lexforge`, `neoforge`, `fabric` |
+| `dummy-assets`        | Use dummy assets during testing        |          | `true`, `false`                          |
+| `xvfb`                | Runs the game with Xvfb                |          | `true`, `false`                          |
+| `headlessmc-command`  | Command-line arguments for HeadlessMC  |          | `--jvm "-Djava.awt.headless=true"`       |
+| `fabric-api`          | Fabric API version to download or none |          | `0.97.0`, `none`                         |
+| `fabric-gametest-api` | Fabric GameTest API version or none    |          | `1.3.5+85d85a934f`, `none`               |
+| `download-hmc`        | Download HeadlessMC                    |          | `true`, `false`                          |
+| `hmc-version`         | HeadlessMC version                     |          | `2.4.1`, `1.5.0`                         |
+| `cache-mc`            | Cache `.minecraft`                     |          | `true`, `false`                          |
+
+---
+
+## Running Your Own Tests
+MC-Runtime-Test supports Minecraft’s [Game-Test Framework](https://www.minecraft.net/en-us/creator/article/get-started-gametest-framework). It executes `/test runall` upon joining a world.
+
+> [!TIP]  
+> Currently, Forge and NeoForge GameTest discovery may require additional setup, [hacks](gametest/src/main/java/me/earth/clientgametest/mixin/MixinGameTestRegistry.java), or other modifications to register structure templates correctly. We expect to simplify this for future releases.
+
+You can also use the `headlessmc-command` input to specify a JVM argument to enforce the minimum number of GameTests you expect to be executed:
+
+<pre lang="bash">
+-DMcRuntimeGameTestMinExpectedGameTests=1
+</pre>
+
+---
+
+## Acknowledgments
+Special thanks to [wagyourtail](https://github.com/wagyourtail) for the [unimined](https://github.com/unimined/unimined) Gradle plugin, which enabled multi-modloader support and accelerated development of this project.
+
+---
