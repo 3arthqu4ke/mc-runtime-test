@@ -52,9 +52,8 @@ You can configure it to use any other version, but in that case you need to set 
 </div>
 
 Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
-<!-- x-release-please-start-version -->
 # Example
-```yml
+<pre lang="yml">
 name: Run the MC client
 on:
   workflow_dispatch:
@@ -77,15 +76,15 @@ jobs:
         run: mkdir -p run/mods && cp build/libs/<your-mod>.jar run/mods
       # Call this Action to run the client
       - name: Run the MC client
-        uses: headlesshq/mc-runtime-test@3.0.0
+        uses: headlesshq/mc-runtime-test@3.0.0 <!-- x-release-please-version -->
         with:
           mc: 1.21.4
           modloader: fabric
           regex: .*fabric.*
           mc-runtime-test: fabric
           java: ${{ env.java_version }}
-```
-<!-- x-release-please-end -->
+</pre>
+
 An example workflow in action can be found
 [here](https://github.com/3arthqu4ke/hmc-optimizations/blob/1.20.4/.github/workflows/run-fabric.yml).
 An example for a large matrix workflow
