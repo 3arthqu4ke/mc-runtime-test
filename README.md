@@ -8,7 +8,6 @@ MC-Runtime-Test | <a href="https://github.com/3arthqu4ke/headlessmc">HMC</a> | <
 
 [![CodeFactor](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/badge/main)](https://www.codefactor.io/repository/github/headlesshq/mc-runtime-test/overview/main)
 [![GitHub All Releases](https://img.shields.io/github/downloads/headlesshq/mc-runtime-test/total.svg)](https://github.com/headlesshq/mc-runtime-test/releases)
-![GitHub Workflow Status](https://github.com/headlesshq/mc-runtime-test/actions/workflows/run-matrix.yml/badge.svg)
 ![GitHub License](https://img.shields.io/github/license/headlesshq/mc-runtime-test)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/headlesshq/mc-runtime-test)
 
